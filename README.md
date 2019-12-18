@@ -1,2 +1,2 @@
 # ParaScript
-A programming language to teach beginners to learn through code
+A programming language to teach beginners to learn to code.

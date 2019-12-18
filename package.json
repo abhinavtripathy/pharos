@@ -1,0 +1,19 @@
+{
+  "name": "parascript",
+  "version": "1.0.0",
+  "description": "A programming language to teach beginners to learn to code.",
+  "main": "index.js",
+  "scripts": {
+    "test": "\"\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abhinavtripathy/ParaScript.git"
+  },
+  "author": "Abhinav Tripathy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/abhinavtripathy/ParaScript/issues"
+  },
+  "homepage": "https://github.com/abhinavtripathy/ParaScript#readme"
+}
