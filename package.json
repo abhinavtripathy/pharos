@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/abhinavtripathy/ParaScript/issues"
   },
-  "homepage": "https://github.com/abhinavtripathy/ParaScript#readme"
+  "homepage": "https://github.com/abhinavtripathy/ParaScript#readme",
+  "dependencies": {
+    "compromise": "^12.2.1"
+  }
 }
