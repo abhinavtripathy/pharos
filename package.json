@@ -4,7 +4,7 @@
   "description": "A programming language to teach beginners to learn to code.",
   "main": "index.js",
   "scripts": {
-    "test": "\"\""
+    "test": ""
   },
   "repository": {
     "type": "git",
