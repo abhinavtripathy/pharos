@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A programming language to teach beginners to learn to code.",
   "main": "index.js",
+  "publishConfig": { "registry": "https://npm.pkg.github.com/" },
   "scripts": {
     "test": ""
   },
