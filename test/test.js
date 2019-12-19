@@ -1,32 +1,11 @@
-let sum = require('../index')
-var expect = require('chai').expect;
+let index = require('../index')
 
 var assert = require('assert');
 describe('Sum', function() {
   describe('Addition', function() {
     it('should return the sum', function() {
-      assert.equal(sum(1,2), 3);
+    
+      assert.equal(index(1,2), 3);
     });
   });
 });
-
-
-// describe('#sum()', function() {
-  
-//   context('with number arguments', function() {
-//     it('should return sum of arguments', function() {
-//       expect(sum(1, 2)).to.equal(3)
-//     }) } 
-    
-//     )})
-
-
-// var assert = require('assert');
-// describe('Basic Mocha String Test', function () {
-//  it('should return number of charachters in a string', function () {
-//         assert.equal("Hello".length, 4);
-//     });
-//  it('should return first charachter of the string', function () {
-//         assert.equal("Hello".charAt(0), 'H');
-//     });
-// });
