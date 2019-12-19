@@ -1,11 +1,11 @@
-var sum = require('../index');
+let sum = require('../index')
 var expect = require('chai').expect;
 
 var assert = require('assert');
 describe('Sum', function() {
   describe('Addition', function() {
     it('should return the sum', function() {
-      assert.equal(index.sum(1,2), 3);
+      assert.equal(sum(1,2), 3);
     });
   });
 });
