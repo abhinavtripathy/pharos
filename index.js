@@ -1,5 +1,6 @@
 
-function context() {
+
+function hello () {
 
 
 
@@ -13,11 +14,12 @@ function operations() {
 }
 
 
-let sum = function(a, b) {
+function sum(a, b) {
 
 
     return a + b;
 
 }
 
-module.exports = sum;
+
+module.export = hello;
