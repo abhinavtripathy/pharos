@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/abhinavtripathy/ParaScript.git"
+    "url": "git+https://github.com/abhinavtripathy/pharos.git"
   },
   "author": "Abhinav Tripathy",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/abhinavtripathy/ParaScript/issues"
+    "url": "https://github.com/abhinavtripathy/pharos/issues"
   },
-  "homepage": "https://github.com/abhinavtripathy/ParaScript#readme",
+  "homepage": "https://github.com/abhinavtripathy/pharos#readme",
   "dependencies": {
     "compromise": "^12.2.1"
   },

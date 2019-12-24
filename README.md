@@ -4,3 +4,12 @@
 [![License](http://img.shields.io/badge/License-MIT-brightgreen.svg)](./LICENSE)
 
 A programming language to teach beginners to learn through writing simple sentences.
+
+### Installing
+
+The prject requires NPM and nodeJS to install the dependencies.
+
+```
+npm install
+```
+
