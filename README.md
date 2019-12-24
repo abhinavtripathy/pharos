@@ -7,9 +7,11 @@ A programming language to teach beginners to learn through writing simple senten
 
 ### Installing
 
-The prject requires NPM and nodeJS to install the dependencies.
+The project requires NPM and nodeJS to install the dependencies.
 
 ```
+git clone https://github.com/abhinavtripathy/pharos.git
+
 npm install
 ```
 
