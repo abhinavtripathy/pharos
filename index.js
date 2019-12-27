@@ -1,25 +1,16 @@
 
+function mathOperations() {
 
-function hello () {
 
 
 
 }
 
+let a = []
 
-function operations() {
+a.push(2)
+a.push(3)
+a.push(4)
+a.pop()
 
-
-    
-}
-
-
-function sum(a, b) {
-
-
-    return a + b;
-
-}
-
-
-module.export = hello;
+console.log(a)
