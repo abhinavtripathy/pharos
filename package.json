@@ -21,7 +21,8 @@
   "homepage": "https://github.com/abhinavtripathy/pharos#readme",
   "dependencies": {
     "compromise": "^12.2.1",
-    "compromise-numbers": "0.0.2"
+    "compromise-numbers": "0.0.2",
+    "mathjs": "^6.2.5"
   },
   "devDependencies": {
     "chai": "^4.2.0",
