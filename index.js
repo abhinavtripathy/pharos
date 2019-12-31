@@ -49,7 +49,7 @@ function isMathQuery(query) {
     return isMath
 }
 
-isMathQuery("Hello world he haa ")
+console.log(isMathQuery("Hello 3 he haa "))
 test = "Hello world. This is a program and it is pretty good. I like it quite a bit a bit. a."
 
 // interpreter(test)
