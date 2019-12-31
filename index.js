@@ -46,11 +46,11 @@ function isMathQuery(query) {
 
     }
 
-    return numCount
+    return numCount > 0 ? true : false 
 
 }
 
-console.log(isMathQuery("Hello 3 he haa"))
+console.log(isMathQuery("Hello he haa"))
 
 test = "Hello world. This is a program and it is pretty good. I like it quite a bit a bit. a."
 
