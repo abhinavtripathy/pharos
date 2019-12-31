@@ -38,11 +38,7 @@ function isMathQuery(query) {
     let numCount = 0 
     for(let mathQ of mathQuery) {
 
-        if(!isNaN(parseInt(mathQ))) {
-
-            numCount++
-
-        }
+        if(!isNaN(parseInt(mathQ))) numCount++
 
     }
 
