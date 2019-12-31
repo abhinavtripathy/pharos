@@ -11,6 +11,7 @@ function interpreter(query) {
     
     sentenceSplit = sentenceSplit.filter(s => s != '')
 
+    console.log("Sentence Split Array:")
     console.log(sentenceSplit)
 
     processQueries(sentenceSplit)
@@ -20,13 +21,20 @@ function interpreter(query) {
 function processQueries(queryArr) {
 
     for(let query of queryArr) {
-
         
+        console.log(query)
 
     }
 
 }
 
+
+function isMathQuery(query) {
+
+    
+
+
+}
 test = "Hello world. This is a program and it is pretty good. I like it quite a bit a bit. a."
 
 interpreter(test)
