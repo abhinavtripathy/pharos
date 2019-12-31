@@ -8,3 +8,8 @@ let nums = doc.values().toNumber()
 nums = nums.out('array')
 
 console.log(math.evaluate('(2 * 3)'))
+
+if(isNaN(parseInt('a'))) {
+
+    console.log(true)
+}
