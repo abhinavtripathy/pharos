@@ -6,10 +6,12 @@ function interpreter(query) {
     
     for(let i = 0; i < sentenceSplit.length; i++) {
 
-        
-
+        sentenceSplit[i] = sentenceSplit[i].trim()
 
     }
+    sentenceSplit = sentenceSplit.filter(v => v !='')
+    
+    console.log(sentenceSplit)
 
 }
 
