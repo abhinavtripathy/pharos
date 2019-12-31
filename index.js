@@ -35,22 +35,22 @@ function isMathQuery(query) {
     mathQuery = mathQuery.filter(s => s != '')
     console.log(mathQuery)
 
-    let isMath = false
+    let numCount = 0 
     for(let mathQ of mathQuery) {
 
         if(!isNaN(parseInt(mathQ))) {
 
-            isMath = true
+            numCount++
 
         }
 
     }
 
-    return isMath
+    return numCount
 
 }
 
-console.log(isMathQuery("Hello he haa "))
+console.log(isMathQuery("Hello 3 he haa"))
 
 test = "Hello world. This is a program and it is pretty good. I like it quite a bit a bit. a."
 
