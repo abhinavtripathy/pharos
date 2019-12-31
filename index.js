@@ -2,15 +2,14 @@
 function interpreter(query) {
 
     let sentenceSplit = query.split(".")
-    console.log(sentenceSplit)
     
     for(let i = 0; i < sentenceSplit.length; i++) {
 
         sentenceSplit[i] = sentenceSplit[i].trim()
 
     }
-    sentenceSplit = sentenceSplit.filter(v => v !='')
-    
+    sentenceSplit = sentenceSplit.filter(v => v != '')
+
     console.log(sentenceSplit)
 
 }
