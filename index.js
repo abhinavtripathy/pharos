@@ -31,10 +31,25 @@ function processQueries(queryArr) {
 
 function isMathQuery(query) {
 
-    
+    let mathQuery = query.split(" ")
+    mathQuery = mathQuery.filter(s => s != '')
+    console.log(mathQuery)
 
+    let isMath = false
+    for(let mathQ of mathQuery) {
 
+        if(!isNaN(parseInt(mathQ))) {
+
+            isMath = true
+
+        }
+
+    }
+
+    return isMath
 }
+
+isMathQuery("Hello world he haa ")
 test = "Hello world. This is a program and it is pretty good. I like it quite a bit a bit. a."
 
-interpreter(test)
+// interpreter(test)
