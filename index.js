@@ -8,9 +8,11 @@ function interpreter(query) {
         sentenceSplit[i] = sentenceSplit[i].trim()
 
     }
-    sentenceSplit = sentenceSplit.filter(v => v != '')
+    sentenceSplit = sentenceSplit.filter(s => s != '')
 
     console.log(sentenceSplit)
+
+    processQueries(sentenceSplit)
 
 }
 
