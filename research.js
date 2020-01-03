@@ -7,9 +7,10 @@ let doc = nlp("there are $22 areas to improve and twenty thousand things")
 let nums = doc.values().toNumber()
 nums = nums.out('array')
 
-console.log(math.evaluate('(2 * 3)'))
+// console.log(math.evaluate('(2 * 3)'))
 
-if(isNaN(parseInt('a'))) {
+// if(isNaN(parseInt('a'))) {
 
-    console.log(true)
-}
+//     console.log(true)
+// }
+
