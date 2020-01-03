@@ -65,6 +65,7 @@ function mathQuery(query) {
 
 }
 
+
 // console.log(isMathQuery("3 +  4 / 3"))
 
 
