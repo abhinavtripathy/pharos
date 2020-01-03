@@ -33,7 +33,6 @@ function isMathQuery(query) {
 
     let mathQuery = query.split(" ")
     mathQuery = mathQuery.filter(s => s != '')
-    console.log(mathQuery)
 
     let numCount = 0 
     let opCount = 0
@@ -43,17 +42,17 @@ function isMathQuery(query) {
 
         if(!isNaN(parseInt(mathQ))) numCount++
 
-        if(mathQ == '+' || mathQ == '-' || mathQ == '*' || mathQ == '/') opCount
+        if(mathQ == '+' || mathQ == '-' || mathQ == '*' || mathQ == '/') opCount++
 
     }
 
 
     console.log(opCount)
-    return numCount > 0 ? true : false 
+    return numCount > 0 ? true : false && (opCount - 1) == numCount ? true : false
 
 }
 
-console.log(isMathQuery("Hello he + haa"))
+console.log(isMathQuery("3 +  4 / 2"))
 
 test = "Hello world. This is a program and it is pretty good. I like it quite a bit a bit. a."
 
