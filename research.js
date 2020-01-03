@@ -13,4 +13,3 @@ nums = nums.out('array')
 
 //     console.log(true)
 // }
-
