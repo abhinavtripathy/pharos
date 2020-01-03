@@ -34,7 +34,7 @@ function processQueries(queryArr) {
 
 }
 
-
+// Return boolean depending whether the query is a math query
 function isMathQuery(query) {
 
     let mathQuery = query.split(" ")
@@ -58,14 +58,15 @@ function isMathQuery(query) {
 
 }
 
-
+// Processes a math query
 function mathQuery(query) {
 
-    return 
+    return math.evaluate(query)
 
 }
 
-console.log(isMathQuery("3 +  4 / 3"))
+// console.log(isMathQuery("3 +  4 / 3"))
+
 
 test = "Hello world. This is a program and it is pretty good. I like it quite a bit a bit. a."
 
