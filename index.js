@@ -1,4 +1,8 @@
+// Imports
+let math = require('mathjs')
 
+
+// Main Interpreter Function
 function interpreter(query) {
 
     let sentenceSplit = query.split(".")
@@ -18,6 +22,8 @@ function interpreter(query) {
 
 }
 
+
+// Query Processing Function - Sentence by Sentence
 function processQueries(queryArr) {
 
     for(let query of queryArr) {
@@ -48,11 +54,18 @@ function isMathQuery(query) {
 
 
     console.log(opCount)
-    return numCount > 0 ? true : false && (opCount - 1) == numCount ? true : false
+    return numCount > 0 && opCount + 1 == numCount ? true : false 
 
 }
 
-console.log(isMathQuery("3 +  4 / 2"))
+
+function mathQuery(query) {
+
+    return 
+
+}
+
+console.log(isMathQuery("3 +  4 / 3"))
 
 test = "Hello world. This is a program and it is pretty good. I like it quite a bit a bit. a."
 
