@@ -15,5 +15,7 @@ git clone https://github.com/abhinavtripathy/pharos.git
 cd pharos
 
 npm install
+
+or yarn install
 ```
 
