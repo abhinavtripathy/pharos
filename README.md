@@ -16,6 +16,5 @@ cd pharos
 
 npm install
 
-or yarn install
 ```
 
