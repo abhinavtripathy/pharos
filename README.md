@@ -7,7 +7,8 @@ A programming language to teach beginners to learn through writing simple senten
 
 ### Motivation
 
-
+Pharos is built for high school and middle school students who are transitioning from a programming tool like scratch to an actual programming language. This language is meant for easing the transition. 
 
 ### Tech Stack
 
+Since this is a Domain Specific Language, we wanted base language to be fast, popular so people can contribute to it and give us robust performance. We chose to build our language to built on top of Go. 
