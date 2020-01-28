@@ -5,16 +5,9 @@
 
 A programming language to teach beginners to learn through writing simple sentences in English.
 
-### Installing
+### Motivation
 
-The project requires NPM and nodeJS to install the dependencies.
 
-```
-git clone https://github.com/abhinavtripathy/pharos.git
 
-cd pharos
-
-npm install
-
-```
+### Tech Stack
 
