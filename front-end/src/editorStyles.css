@@ -1,0 +1,12 @@
+#editor {
+    overflow-y: auto;
+    height: 90%;
+}
+#root {
+    height: 100%;
+}
+div.DraftEditor-editorContainer,
+div.public-DraftEditor-content {
+    height: 100%;
+    padding: 10px 0px 0px 0px;
+}
