@@ -1,6 +1,7 @@
 # pharos
 <!-- 
 [![Actions Status](https://github.com/abhinavtripathy/pharos/workflows/Node%20CI/badge.svg)](https://github.com/abhinavtripathy/pharos/actions) -->
+![GitHub stars](https://img.shields.io/github/stars/abhinavtripathy/pharos.svg)
 [![License](http://img.shields.io/badge/License-MIT-brightgreen.svg)](./LICENSE)
 
 A programming language to teach beginners to learn through writing simple sentences in English.
