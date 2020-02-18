@@ -37,10 +37,14 @@ For back-end:
 
 Linux/MacOS Users:
 ```
+cd backend/
+
 ./setup.sh
 ```
 
 Windows Users:
 ```
+cd backend/
+
 ./setup.bat
 ```
