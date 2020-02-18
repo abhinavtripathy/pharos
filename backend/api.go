@@ -9,7 +9,7 @@ import (
 )
 
 func homeLink(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Welcome to the Stocksmith API")
+	fmt.Fprintf(w, "Welcome to Pharos")
 }
 
 func main() {
