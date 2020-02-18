@@ -13,3 +13,34 @@ Pharos is built for high school and middle school students who are transitioning
 ### Tech Stack
 
 Since this is a Domain Specific Language, we wanted base language to be fast, popular so people can contribute to it and give us robust performance. We chose to build our language to built on top of Go. 
+
+
+## Installation 
+
+For front-end:
+
+```
+npm install 
+
+npm start
+```
+
+or 
+
+```
+yarn install
+
+yarn start
+```
+
+For back-end:
+
+Linux/MacOS Users:
+```
+./setup.sh
+```
+
+Windows Users:
+```
+./setup.bat
+```
