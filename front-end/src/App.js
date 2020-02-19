@@ -6,6 +6,7 @@ import Output from './Output';
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
+    overflow: "hidden",
   },
 
   grid: {
