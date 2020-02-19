@@ -2,7 +2,7 @@
     overflow-y: auto;
     height: 90%;
 }
-#root {
+#subroot {
     height: 100%;
 }
 div.DraftEditor-editorContainer,

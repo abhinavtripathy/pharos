@@ -2,6 +2,7 @@ import React from 'react';
 import {Editor, EditorState, convertToRaw} from 'draft-js';
 import './editorStyles.css';
 import { Button } from '@material-ui/core';
+import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
 
 class Draft extends React.Component {
     constructor(props) {
@@ -25,9 +26,9 @@ class Draft extends React.Component {
     
     render() {
         return (
-            <div id="root">
-                <Button variant="contained" onClick={this.run}>
-                    RUN
+            <div id="subroot">
+                <Button variant="contained" color="secondary" onClick={this.run}>
+                    <PlayArrowRoundedIcon/>
                 </Button>
                 <div id="editor" onClick={this.focusEditor}>
                     <Editor
