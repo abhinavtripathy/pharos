@@ -19,8 +19,8 @@ const OPCOMP_REGEX = new RegExp("(?:[\\s]|^)(" + op_comp.join("|") + ")(?=[\\s]|
 const LOOP_REGEX = new RegExp("(?:[\\s]|^)(" + loop.join("|") + ")(?=[\\s]|$)", 'gi')
 const FUNC_REGEX = new RegExp("(?:[\\s]|^)(" + functions.join("|") + ")(?=[\\s]|$)", 'gi')
 
-const DOUBLE_QUOTE_REGEX = /(["'])(?:(?=(\\?))\2.)*?\1/g;
-const SINGLE_QUOTE_REGEX = /([''])(?:(?=(\\?))\2.)*?\1/g;
+const DOUBLE_QUOTE_REGEX = /(["])(?:(?=(\\?))\2.)*?\1/g;
+const SINGLE_QUOTE_REGEX = /(['])(?:(?=(\\?))\2.)*?\1/g;
 
 const Variable = ({ children }) => {
     return (
@@ -72,7 +72,7 @@ const Func = ({ children }) => {
 
 const DoubleQuoteSpan = ({ children }) => {
     return (
-      <span style={{ color: "red" }}>
+      <span style={{ color: "orange" }}>
         {children}
       </span>
     );
@@ -80,7 +80,7 @@ const DoubleQuoteSpan = ({ children }) => {
 
 const SingleQuoteSpan = ({ children }) => {
     return (
-      <span style={{ color: "orange" }}>
+      <span style={{ color: "darkOrange" }}>
         {children}
       </span>
     );
