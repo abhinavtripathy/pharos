@@ -9,4 +9,5 @@ div.DraftEditor-editorContainer,
 div.public-DraftEditor-content {
     height: 100%;
     padding: 10px 0px 0px 0px;
+    font-size: 20px;
 }
