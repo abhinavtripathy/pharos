@@ -1,10 +1,9 @@
+[![Actions Status](https://github.com/abhinavtripathy/pharos/workflows/Node%20CI/badge.svg)](https://github.com/abhinavtripathy/pharos/actions)
 [![License](http://img.shields.io/badge/License-MIT-brightgreen.svg)](./LICENSE)
 ![GitHub stars](https://img.shields.io/github/stars/abhinavtripathy/pharos.svg)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/abhinavtripathy/pharos.svg?color=red)
 
 # pharos
-<!-- 
-[![Actions Status](https://github.com/abhinavtripathy/pharos/workflows/Node%20CI/badge.svg)](https://github.com/abhinavtripathy/pharos/actions) -->
 
 > Pharos *Noun* A light house to direct beginners to code
 
