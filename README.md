@@ -5,7 +5,7 @@
 
 # pharos
 
-> Pharos *Noun* A light house to direct beginners to code
+> Pharos *Noun* A light house to direct beginners
 
 
 ### Motivation
