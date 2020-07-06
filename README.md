@@ -37,16 +37,34 @@ yarn start
 
 For back-end:
 
-Linux/MacOS Users:
-```
-cd backend/
+Install rust from https://www.rust-lang.org/tools/install
 
-./setup.sh
+We use a library called Rocket for building our server. Rocket needs the beta verstion of Rust (called Rust Nightly) to run. This version of rust is unstable but Rocket is one of the best libraries we have and for the our initial puroposes this will suffice. A stable version of Rocket is expected to be released soon, we will probably update to that version or rebuild the server with a more stable version for the final version.  
+
+After installing Rust you need to go the directory backed. Check the version of rust with the following code:
+
+```
+rustc --version
 ```
 
-Windows Users:
-```
-cd backend/
+if it is not nightly enter the following code:
 
-./setup.bat
 ```
+rustup override set nightly
+```
+
+You can also revert it back to stable version with the following code:
+
+```
+rustup override set stable
+```
+
+To setup the server run:
+
+```
+cargo build
+cargo run
+```
+
+
+
