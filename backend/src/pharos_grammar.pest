@@ -1,0 +1,54 @@
+WHITESPACE = _{ " " | "\n" }
+
+pharos = _{SOI ~ (print 
+| assignment 
+| identifier
+| logical_operation)* ~ EOI}
+
+
+assignment = {"let" ~ identifier ~"=" ~ primitive_type}
+
+print = {("out" | "output" | "print") ~ string }
+
+primitive_type = {number | string | boolean}
+
+
+identifier = @{ !(keywords | ("\"")) ~ (ASCII_ALPHA | ("_")) ~ (ASCII_ALPHANUMERIC | ("_"))* }
+
+expression = {number | boolean | keywords}
+
+keywords = @{("output" | "out" | "print" | "function" | "if")}
+
+logical_operation = {expression ~ logical_operators ~ expression}
+
+logical_operators = {
+    (op_ge) | (op_le) | (op_ne) |
+    (op_eq) | (op_gt) | (op_lt) |
+    (op_or) | (op_and)| (op_nt) 
+}
+
+op_ge = { (">=") | ("greater than or equal to")}
+op_le = { ("<=") | ("less than or equal to")}
+op_ne = { ("!=") | ("not equal to")}
+op_eq = { ("==") | ("equal to") }
+op_gt = { (">")  | ("greater than")}
+op_lt = { ("<")  | ("less than")}
+op_or = { ("||") | ("or") }
+op_and = { ("&&") | ("and") }
+op_nt = {("!") | "not"}
+
+number = @{
+    "-"?
+    ~ ("0" | ASCII_NONZERO_DIGIT ~ ASCII_DIGIT*)
+    ~ ("." ~ ASCII_DIGIT*)?
+}
+
+boolean = {"false" | "true"}
+
+string = ${ "\"" ~ inner ~ "\"" }
+inner = @{ char* }
+char = {
+    !("\"" | "\\") ~ ANY
+    | "\\" ~ ("\"" | "\\" | "/" | "b" | "f" | "n" | "r" | "t")
+    | "\\" ~ ("u" ~ ASCII_HEX_DIGIT{4})
+}

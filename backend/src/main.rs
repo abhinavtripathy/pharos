@@ -1,6 +1,7 @@
 #![feature(proc_macro_hygiene, decl_macro)]
-
+#![allow(warnings)]
 use json;
+use reqwest::ClientBuilder;
 use rocket::http::Method;
 use rocket::response::content;
 use rocket::*;
@@ -8,7 +9,12 @@ use rocket_contrib::json::Json;
 use rocket_cors;
 use rocket_cors::{AllowedHeaders, AllowedOrigins, Error};
 use serde::Deserialize;
-mod parser;
+use std::time::Duration;
+
+mod compiler;
+
+#[macro_use]
+extern crate pest_derive;
 
 // this is to establish a format in which we can pass json data between backend and front end
 #[derive(Debug, PartialEq, Eq, Deserialize, Responder)]
@@ -28,7 +34,7 @@ fn retrieve(code: Json<Data>) -> content::Json<Data> {
 
     println!("Request Recieved"); // acknowledging that a request has been recieved
 
-    let parsed_code = parser::parse(retrived_code_blocks).unwrap(); // sending the recieved code to the parser.
+    let parsed_code = compiler::parse(retrived_code_blocks).unwrap(); // sending the recieved code to the compiler.
 
     // sending the result as a json response back to the client
     let mut parsed_code_vec = Vec::new();
