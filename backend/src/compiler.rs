@@ -3,7 +3,6 @@ use reqwest::ClientBuilder;
 use std::time::Duration;
 extern crate pest;
 
-use nom;
 use pest::Parser;
 
 #[derive(Parser)]
@@ -44,6 +43,9 @@ fn testParser() {
          (((5 > 3) && (3 < 4)) or !(5 < 6))
          not 4
          (((6 > 2) or (5 > 10) ) and ((3 > 6) and (4 < 9)))
+         let x = 5
+         (5 + 3)
+         print "hello"
         "#,
     )
     // .unwrap();
@@ -58,7 +60,7 @@ fn testParser() {
     //println!("{:?}", pairs);
     for pair in pairs {
         //let tokens: Vec<_> = pair.tokens().collect();
-        println!("{:?}", pair.as_rule());
+        println!("{:?}", pair.as_str());
         // if tokens.len() > 2 {
         //     // for i in 0..tokens.len() {
         //     // }

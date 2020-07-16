@@ -1,50 +1,60 @@
 WHITESPACE = _{ " " | "\n" }
 COMMENT = { "//" ~ (!"//" ~ ANY)* ~ "//" }
 
-pharos = _{SOI ~ (print 
+pharos = _{SOI ~ ( statement
 | expression
-| assignment 
 )* ~ EOI}
 
+expression = {number | boolean | identifier | binop | uniop}
+statement = {print | assignment}
 
-assignment = {"let" ~ identifier ~"=" ~ primitive_type}
+assignment = {"let" ~ identifier ~"=" ~ primitive_data_type}
 
 print = {("out" | "output" | "print") ~ string }
 
-primitive_type = {number | string | boolean}
+primitive_data_type = {number | string | boolean}
 
 
-identifier = @{ !("\"") ~ (ASCII_ALPHA | ("_")) ~ (ASCII_ALPHANUMERIC | ("_"))* }
-
-expression = {number | boolean | identifier | logical_binop | logical_uniop}
-
-logical_binop = {
-    "(" ~ expression ~ bin_logical_operators ~ expression ~ ")"
+binop = {
+    "(" ~ expression ~ (bin_logical_operators | bin_math_operators) ~ expression ~ ")"
 }
 
-logical_uniop = {
-    op_nt ~ expression
+uniop = {
+    l_op_nt ~ expression
 }
 
 bin_logical_operators = {
-    (op_ge) | (op_le) | (op_ne) |
-    (op_eq) | (op_gt) | (op_lt) |
-    (op_or) | (op_and)
+    (l_op_ge) | (l_op_le) | (l_op_ne) |
+    (l_op_eq) | (l_op_gt) | (l_op_lt) |
+    (l_op_or) | (l_op_and)
 }
 
-op_ge = { (">=") | ("is greater than or equal to")}
-op_le = { ("<=") | ("is less than or equal to")}
-op_ne = { ("!=") | ("is not equal to")}
-op_eq = { ("==") | ("is equal to") }
-op_gt = { (">")  | ("is greater than")}
-op_lt = { ("<")  | ("is less than")}
-op_or = { ("||") | ("or") }
-op_and = { ("&&") | ("and") }
-op_nt = {("!") | "not"}
+l_op_ge = { (">=") | ("is greater than or equal to")}
+l_op_le = { ("<=") | ("is less than or equal to")}
+l_op_ne = { ("!=") | ("is not equal to")}
+l_op_eq = { ("==") | ("is equal to") }
+l_op_gt = { (">")  | ("is greater than")}
+l_op_lt = { ("<")  | ("is less than")}
+l_op_or = { ("||") | ("or") }
+l_op_and = { ("&&") | ("and") }
+l_op_nt = {("!") | "not"}
 
 
+bin_math_operators = {
+    (m_op_add) | (m_op_sub) | (m_op_mul) |
+    (m_op_mul) | (m_op_by) | (m_op_mod) 
+}
+
+m_op_add = { ("+") | ("plus")}
+m_op_sub = { ("-") | ("minus")}
+m_op_mul = { ("*") | ("times")}
+m_op_by = { ("/") | ("divided by")}
+m_op_mod = { ("%") | ("modulus")}
 
 // primitive data types for expressions
+
+identifier = @{ !("\"") ~ (ASCII_ALPHA | ("_")) ~ (ASCII_ALPHANUMERIC | ("_"))* }
+
 number = @{
     "-"?
     ~ ("0" | ASCII_NONZERO_DIGIT ~ ASCII_DIGIT*)
