@@ -3,6 +3,7 @@ use reqwest::ClientBuilder;
 use std::time::Duration;
 extern crate pest;
 
+use nom;
 use pest::Parser;
 
 #[derive(Parser)]
@@ -33,16 +34,31 @@ fn testParser() {
     let pairs = pharos_parser::parse(
         Rule::pharos,
         r#"
-        let x= 5;
-        let y = false
-        let foo = "hello"
+         ( 2 < 5)
+         ( 6 == 7)
+         (2 is less than three)
+         exit
+         outside
+         (false || true)
+         ((false || true) || (true and false))
+         (((5 > 3) && (3 < 4)) or !(5 < 6))
+         not 4
+         (((6 > 2) or (5 > 10) ) and ((3 > 6) and (4 < 9)))
         "#,
     )
+    // .unwrap();
+    // let pairs = pharos_parser::parse(
+    //     Rule::json,
+    //     r#"
+    //      [[2],2,3,2,[1,3]]
+    //      (4 < (5 < 2))
+    //     "#,
+    // )
     .unwrap();
     //println!("{:?}", pairs);
     for pair in pairs {
         //let tokens: Vec<_> = pair.tokens().collect();
-        println!("{:?}", pair.as_str());
+        println!("{:?}", pair.as_rule());
         // if tokens.len() > 2 {
         //     // for i in 0..tokens.len() {
         //     // }

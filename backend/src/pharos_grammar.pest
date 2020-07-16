@@ -1,9 +1,10 @@
 WHITESPACE = _{ " " | "\n" }
+COMMENT = { "//" ~ (!"//" ~ ANY)* ~ "//" }
 
 pharos = _{SOI ~ (print 
+| expression
 | assignment 
-| identifier
-| logical_operation)* ~ EOI}
+)* ~ EOI}
 
 
 assignment = {"let" ~ identifier ~"=" ~ primitive_type}
@@ -13,30 +14,37 @@ print = {("out" | "output" | "print") ~ string }
 primitive_type = {number | string | boolean}
 
 
-identifier = @{ !(keywords | ("\"")) ~ (ASCII_ALPHA | ("_")) ~ (ASCII_ALPHANUMERIC | ("_"))* }
+identifier = @{ !("\"") ~ (ASCII_ALPHA | ("_")) ~ (ASCII_ALPHANUMERIC | ("_"))* }
 
-expression = {number | boolean | keywords}
+expression = {number | boolean | identifier | logical_binop | logical_uniop}
 
-keywords = @{("output" | "out" | "print" | "function" | "if")}
-
-logical_operation = {expression ~ logical_operators ~ expression}
-
-logical_operators = {
-    (op_ge) | (op_le) | (op_ne) |
-    (op_eq) | (op_gt) | (op_lt) |
-    (op_or) | (op_and)| (op_nt) 
+logical_binop = {
+    "(" ~ expression ~ bin_logical_operators ~ expression ~ ")"
 }
 
-op_ge = { (">=") | ("greater than or equal to")}
-op_le = { ("<=") | ("less than or equal to")}
-op_ne = { ("!=") | ("not equal to")}
-op_eq = { ("==") | ("equal to") }
-op_gt = { (">")  | ("greater than")}
-op_lt = { ("<")  | ("less than")}
+logical_uniop = {
+    op_nt ~ expression
+}
+
+bin_logical_operators = {
+    (op_ge) | (op_le) | (op_ne) |
+    (op_eq) | (op_gt) | (op_lt) |
+    (op_or) | (op_and)
+}
+
+op_ge = { (">=") | ("is greater than or equal to")}
+op_le = { ("<=") | ("is less than or equal to")}
+op_ne = { ("!=") | ("is not equal to")}
+op_eq = { ("==") | ("is equal to") }
+op_gt = { (">")  | ("is greater than")}
+op_lt = { ("<")  | ("is less than")}
 op_or = { ("||") | ("or") }
 op_and = { ("&&") | ("and") }
 op_nt = {("!") | "not"}
 
+
+
+// primitive data types for expressions
 number = @{
     "-"?
     ~ ("0" | ASCII_NONZERO_DIGIT ~ ASCII_DIGIT*)
@@ -48,7 +56,46 @@ boolean = {"false" | "true"}
 string = ${ "\"" ~ inner ~ "\"" }
 inner = @{ char* }
 char = {
-    !("\"" | "\\") ~ ANY
+    !("\"" | "\\" | "//") ~ ANY
     | "\\" ~ ("\"" | "\\" | "/" | "b" | "f" | "n" | "r" | "t")
-    | "\\" ~ ("u" ~ ASCII_HEX_DIGIT{4})
 }
+
+
+// JSON grammar for reference 
+// WHITESPACE = _{ " " | "\t" | "\r" | "\n" }
+// object = {
+//     "{" ~  null ~"}" |
+//     "{" ~ pair ~ ("," ~ pair)* ~ "}"
+// }
+// pair = { string ~ ":" ~ value }
+
+// array = {
+// //    "[" ~ "]" |
+//     "[" ~ value ~ ("," ~ value)* ~ "]"
+// }
+// value = _{ object | array | string | number | boolean | null | logical_binop}
+
+// logical_binop = {
+//     "(" ~ value ~ (">" | "<" | "==") ~ value ~ ")"
+// }
+
+// boolean = { "true" | "false" }
+
+// null = { "null" }
+
+// string = ${ "\"" ~ inner ~ "\"" }
+// inner = @{ char* }
+// char = {
+//     !("\"" | "\\") ~ ANY
+//     | "\\" ~ ("\"" | "\\" | "/" | "b" | "f" | "n" | "r" | "t")
+//     | "\\" ~ ("u" ~ ASCII_HEX_DIGIT{4})
+// }
+
+// number = @{
+//     "-"?
+//     ~ ("0" | ASCII_NONZERO_DIGIT ~ ASCII_DIGIT*)
+//     ~ ("." ~ ASCII_DIGIT*)?
+//     ~ (^"e" ~ ("+" | "-")? ~ ASCII_DIGIT+)?
+// }
+
+// json = _{ SOI ~ (object | array | logical_binop)* ~ EOI }
