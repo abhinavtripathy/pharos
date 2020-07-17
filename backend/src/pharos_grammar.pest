@@ -1,25 +1,47 @@
 WHITESPACE = _{ " " | "\n" }
 COMMENT = { "//" ~ (!"//" ~ ANY)* ~ "//" }
 
-pharos = _{SOI ~ ( statement
+pharos = _{SOI ~ (function_block
+| codeblock 
+| statement
 | expression
 )* ~ EOI}
 
-expression = {number | boolean | identifier | binop | uniop}
-statement = {print | assignment}
+codeblock = {"{" ~ (statement | expression)+ ~ "}"}
+
+expression = {number | boolean | function_call | identifier | logic | binop_math}
+
+statement = {print | assignment | if_statement | loops}
+
+function_block = {"function" ~ identifier ~ ("inputs" ~ identifier ~ ("," ~ identifier)*)? ~ codeblock}
+
+if_statement = {"if" ~ logic ~ codeblock ~ (else_if_statement | else_statement)*}
+
+else_if_statement = {"else if" ~ logic ~ codeblock ~ (else_statement)*}
+
+else_statement = {"else" ~ codeblock}
+
+loops = {"loop" ~ ( ("until" ~ logic) | (number ~ "times")) ~ codeblock }
+
+while_loop = {""}
 
 assignment = {"let" ~ identifier ~"=" ~ primitive_data_type}
 
-print = {("out" | "output" | "print") ~ string }
+print = {("output"| "out" | "print") ~ string }
 
 primitive_data_type = {number | string | boolean}
 
+logic = {(binop_logic | uniop_logical)}
 
-binop = {
-    "(" ~ expression ~ (bin_logical_operators | bin_math_operators) ~ expression ~ ")"
+binop_logic = {
+    "(" ~ expression ~ (bin_logical_operators) ~ expression ~ ")"
 }
 
-uniop = {
+binop_math = {
+    "(" ~ expression ~ (bin_math_operators) ~ expression ~ ")"
+}
+
+uniop_logical = {
     l_op_nt ~ expression
 }
 
@@ -53,7 +75,13 @@ m_op_mod = { ("%") | ("modulus")}
 
 // primitive data types for expressions
 
-identifier = @{ !("\"") ~ (ASCII_ALPHA | ("_")) ~ (ASCII_ALPHANUMERIC | ("_"))* }
+keywords = {("false" | "true" | "plus" | "function" | "inputs" | "else if"
+| "else" | "if" | "loop" | "until" | "times" | "let" | "output"| "out" | "print" |  "not" | "and"| "or"
+| "plus" | "minus" | "times" | "divided by" | "modulus" ) ~ WHITESPACE}
+
+identifier = @{ !("\"" | keywords) ~ (ASCII_ALPHA | ("_")) ~ (ASCII_ALPHANUMERIC | ("_"))* }
+
+function_call = {(identifier ~ "(" ~ (identifier ~ ("," ~ identifier)*)? ~ ")")}
 
 number = @{
     "-"?

@@ -43,9 +43,51 @@ fn testParser() {
          (((5 > 3) && (3 < 4)) or !(5 < 6))
          not 4
          (((6 > 2) or (5 > 10) ) and ((3 > 6) and (4 < 9)))
-         let x = 5
+         {let x = 5
          (5 + 3)
-         print "hello"
+         print "hello"}
+         if (3 < 4){
+             print "if"
+         }
+         else if (5 > 10){
+             out "not possible"
+         }
+         else{
+             if (4 || 5){
+                 let z = 50
+                 if (9 || false ){
+                     output "another nest"
+                 }
+                 else{
+                     let exit = 1
+                 }
+             }
+         }
+
+         loop 10 times {
+             let x = 10
+         }
+
+         loop until (10 > 10){
+             let z = 10
+             loop 2 times{
+                 print "nest"
+                 loop until (3 > 2){
+                     let nest = true
+                 }
+             }
+         }
+
+         function noinput {
+             let foo = "true"
+         }
+         
+         function hoot inputs owl, bird {
+             let fly = "away"
+         }
+         hello ()
+         hello (one)
+         hello (one, two)
         "#,
     )
     // .unwrap();
@@ -60,7 +102,7 @@ fn testParser() {
     //println!("{:?}", pairs);
     for pair in pairs {
         //let tokens: Vec<_> = pair.tokens().collect();
-        println!("{:?}", pair.as_str());
+        println!("{:?} : {:?}", pair.as_str(), pair.as_rule());
         // if tokens.len() > 2 {
         //     // for i in 0..tokens.len() {
         //     // }
