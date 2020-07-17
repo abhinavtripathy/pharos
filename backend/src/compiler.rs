@@ -1,9 +1,9 @@
 use json;
+use pest_consume::{match_nodes, Error, Parser};
 use reqwest::ClientBuilder;
 use std::time::Duration;
-extern crate pest;
 
-use pest::Parser;
+extern crate pest;
 
 #[derive(Parser)]
 #[grammar = "pharos_grammar.pest"]
@@ -27,25 +27,48 @@ pub fn parse(blocks: &json::JsonValue) -> Result<Vec<&json::JsonValue>, &'static
     }
 }
 
+#[pest_consume::parser]
+impl pharos_parser {}
+
 // test will always fail, used for testing parser without initializingt the server
 #[test]
 fn testParser() {
     let pairs = pharos_parser::parse(
         Rule::pharos,
         r#"
+         // basic data types //
+         6
+         -9
+         9.23
+         "foo 0 0 - - #"
+         false 
+         true
+         printer
+
+         // logical expressions //
          ( 2 < 5)
          ( 6 == 7)
          (2 is less than three)
-         exit
-         outside
+         (2 is less than or equal to y)
          (false || true)
          ((false || true) || (true and false))
          (((5 > 3) && (3 < 4)) or !(5 < 6))
          not 4
          (((6 > 2) or (5 > 10) ) and ((3 > 6) and (4 < 9)))
-         {let x = 5
+         
+         // Math expressions//
          (5 + 3)
-         print "hello"}
+         (6 + (8 - 9))
+         (10 + (1 * (5 - 6)))
+         (6 plus false)
+         ((9 modulus 10) - false)
+
+         // print statements // 
+         print "hello"
+         out "output"
+         output "foo"
+
+         // if statments //
          if (3 < 4){
              print "if"
          }
@@ -64,6 +87,8 @@ fn testParser() {
              }
          }
 
+         //loop statments //
+
          loop 10 times {
              let x = 10
          }
@@ -78,6 +103,7 @@ fn testParser() {
              }
          }
 
+         // functions //
          function noinput {
              let foo = "true"
          }
@@ -85,11 +111,15 @@ fn testParser() {
          function hoot inputs owl, bird {
              let fly = "away"
          }
+
+         // function calls // 
          hello ()
          hello (one)
          hello (one, two)
+        
         "#,
     )
+    .unwrap();
     // .unwrap();
     // let pairs = pharos_parser::parse(
     //     Rule::json,
@@ -98,16 +128,11 @@ fn testParser() {
     //      (4 < (5 < 2))
     //     "#,
     // )
-    .unwrap();
     //println!("{:?}", pairs);
     for pair in pairs {
-        //let tokens: Vec<_> = pair.tokens().collect();
         println!("{:?} : {:?}", pair.as_str(), pair.as_rule());
-        // if tokens.len() > 2 {
-        //     // for i in 0..tokens.len() {
-        //     // }
-        // }
     }
+
     println!();
     assert_eq!(true, false);
 }

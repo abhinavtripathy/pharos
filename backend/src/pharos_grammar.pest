@@ -5,6 +5,7 @@ pharos = _{SOI ~ (function_block
 | codeblock 
 | statement
 | expression
+| primitive_data_type
 )* ~ EOI}
 
 codeblock = {"{" ~ (statement | expression)+ ~ "}"}
