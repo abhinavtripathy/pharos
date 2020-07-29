@@ -1,20 +1,29 @@
 WHITESPACE = _{ " " | "\n" }
 COMMENT = { "//" ~ (!"//" ~ ANY)* ~ "//" }
 
-pharos = _{SOI ~ (function_block
-| codeblock 
-| statement
-| expression
-| primitive_data_type
+pharos = _{SOI ~ (
+ statement
+| expression // This is only temporary, with the exception of function calls there should be no stand alone  expressions in the code
 )* ~ EOI}
 
-codeblock = {"{" ~ (statement | expression)+ ~ "}"}
+// pharos = _{SOI ~ (
+// | statement
+// | function_call
+// )* ~ EOI}
 
-expression = {number | boolean | function_call | identifier | logic | binop_math}
+code = {(statement | function_call)}
 
-statement = {print | assignment | if_statement | loops}
+codeblock = _{"{" ~ code+ ~ "}"}
+
+expression = {number | boolean | string | function_call | identifier | binop_logic | binop_math | uniop_logical}
+
+statement = {function_block | print | assignment | if_statement | loops | return_statment}
+
+return_statment = {"return" ~ expression?}
 
 function_block = {"function" ~ identifier ~ ("inputs" ~ identifier ~ ("," ~ identifier)*)? ~ codeblock}
+
+function_call = {(identifier ~ "(" ~ (expression ~ ("," ~ expression)*)? ~ ")")}
 
 if_statement = {"if" ~ logic ~ codeblock ~ (else_if_statement | else_statement)*}
 
@@ -24,15 +33,13 @@ else_statement = {"else" ~ codeblock}
 
 loops = {"loop" ~ ( ("until" ~ logic) | (number ~ "times")) ~ codeblock }
 
-while_loop = {""}
-
 assignment = {"let" ~ identifier ~"=" ~ primitive_data_type}
 
-print = {("output"| "out" | "print") ~ string }
+print = {("output"| "out" | "print") ~  "(" ~ ( (string | expression) ~ ("," ~ (string | expression))*)? ~ ")"}
 
 primitive_data_type = {number | string | boolean}
 
-logic = {(binop_logic | uniop_logical)}
+logic = _{(binop_logic | uniop_logical)}
 
 binop_logic = {
     "(" ~ expression ~ (bin_logical_operators) ~ expression ~ ")"
@@ -52,15 +59,15 @@ bin_logical_operators = {
     (l_op_or) | (l_op_and)
 }
 
-l_op_ge = { (">=") | ("is greater than or equal to")}
-l_op_le = { ("<=") | ("is less than or equal to")}
-l_op_ne = { ("!=") | ("is not equal to")}
-l_op_eq = { ("==") | ("is equal to") }
-l_op_gt = { (">")  | ("is greater than")}
-l_op_lt = { ("<")  | ("is less than")}
-l_op_or = { ("||") | ("or") }
-l_op_and = { ("&&") | ("and") }
-l_op_nt = {("!") | "not"}
+l_op_ge = _{ (">=") | ("is greater than or equal to")}
+l_op_le = _{ ("<=") | ("is less than or equal to")}
+l_op_ne = _{ ("!=") | ("is not equal to")}
+l_op_eq = _{ ("==") | ("is equal to") }
+l_op_gt = _{ (">")  | ("is greater than")}
+l_op_lt = _{ ("<")  | ("is less than")}
+l_op_or = _{ ("||") | ("or") }
+l_op_and = _{ ("&&") | ("and") }
+l_op_nt = _{("!") | "not"}
 
 
 bin_math_operators = {
@@ -72,17 +79,15 @@ m_op_add = { ("+") | ("plus")}
 m_op_sub = { ("-") | ("minus")}
 m_op_mul = { ("*") | ("times")}
 m_op_by = { ("/") | ("divided by")}
-m_op_mod = { ("%") | ("modulus")}
+m_op_mod = { ("%") | ("mod")}
 
 // primitive data types for expressions
 
-keywords = {("false" | "true" | "plus" | "function" | "inputs" | "else if"
+keywords = _{("false" | "true" | "plus" | "function" | "inputs" | "else if"
 | "else" | "if" | "loop" | "until" | "times" | "let" | "output"| "out" | "print" |  "not" | "and"| "or"
-| "plus" | "minus" | "times" | "divided by" | "modulus" ) ~ WHITESPACE}
+| "plus" | "minus" | "times" | "divided by" | "mod" | "return" ) ~ WHITESPACE}
 
 identifier = @{ !("\"" | keywords) ~ (ASCII_ALPHA | ("_")) ~ (ASCII_ALPHANUMERIC | ("_"))* }
-
-function_call = {(identifier ~ "(" ~ (identifier ~ ("," ~ identifier)*)? ~ ")")}
 
 number = @{
     "-"?
@@ -94,7 +99,7 @@ boolean = {"false" | "true"}
 
 string = ${ "\"" ~ inner ~ "\"" }
 inner = @{ char* }
-char = {
+char = _{
     !("\"" | "\\" | "//") ~ ANY
     | "\\" ~ ("\"" | "\\" | "/" | "b" | "f" | "n" | "r" | "t")
 }
@@ -138,3 +143,12 @@ char = {
 // }
 
 // json = _{ SOI ~ (object | array | logical_binop)* ~ EOI }
+// .unwrap();
+    // let pairs = pharos_parser::parse(
+    //     Rule::json,
+    //     r#"
+    //      [[2],2,3,2,[1,3]]
+    //      (4 < (5 < 2))
+    //     "#,
+    // )
+    //println!("{:?}", pairs);
