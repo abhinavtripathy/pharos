@@ -1,15 +1,14 @@
 WHITESPACE = _{ " " | "\n" }
-COMMENT = { "//" ~ (!"//" ~ ANY)* ~ "//" }
-
-pharos = _{SOI ~ (
- statement
-| expression // This is only temporary, with the exception of function calls there should be no stand alone  expressions in the code
-)* ~ EOI}
+COMMENT = _{ "//" ~ (!"//" ~ ANY)* ~ "//" }
 
 // pharos = _{SOI ~ (
-// | statement
-// | function_call
+//  statement
+// | expression // This is only temporary, with the exception of function calls there should be no stand alone  expressions in the code
 // )* ~ EOI}
+
+pharos = {SOI ~ (
+    code
+)* ~ EOI}
 
 code = {(statement | function_call)}
 
@@ -17,29 +16,31 @@ codeblock = _{"{" ~ code+ ~ "}"}
 
 expression = {number | boolean | string | function_call | identifier | binop_logic | binop_math | uniop_logical}
 
-statement = {function_block | print | assignment | if_statement | loops | return_statment}
+statement = {function_block | print | assignment | conditional | loops | return_statement}
 
-return_statment = {"return" ~ expression?}
+return_statement = {"return" ~ expression?}
 
 function_block = {"function" ~ identifier ~ ("inputs" ~ identifier ~ ("," ~ identifier)*)? ~ codeblock}
 
 function_call = {(identifier ~ "(" ~ (expression ~ ("," ~ expression)*)? ~ ")")}
 
-if_statement = {"if" ~ logic ~ codeblock ~ (else_if_statement | else_statement)*}
+conditional = {if_statement ~ else_if_statement* ~ else_statement?}
 
-else_if_statement = {"else if" ~ logic ~ codeblock ~ (else_statement)*}
+if_statement = {"if" ~ expression ~ codeblock}
+
+else_if_statement = {"else if" ~ expression ~ codeblock}
 
 else_statement = {"else" ~ codeblock}
 
-loops = {"loop" ~ ( ("until" ~ logic) | (number ~ "times")) ~ codeblock }
+loops = {"loop" ~ ( ("until"  ~ expression ) | ( expression  ~ "times")) ~ codeblock }
 
-assignment = {"let" ~ identifier ~"=" ~ primitive_data_type}
+assignment = {"let" ~ identifier ~ "=" ~ expression}
 
-print = {("output"| "out" | "print") ~  "(" ~ ( (string | expression) ~ ("," ~ (string | expression))*)? ~ ")"}
+print = {("output"| "out" | "print") ~  "(" ~ ( expression ~ ("," ~  expression)*)? ~ ")"}
 
 primitive_data_type = {number | string | boolean}
 
-logic = _{(binop_logic | uniop_logical)}
+//logic = _{(binop_logic | uniop_logical)}
 
 binop_logic = {
     "(" ~ expression ~ (bin_logical_operators) ~ expression ~ ")"

@@ -40,6 +40,14 @@ impl pharos_parser {
     fn EOI(_input: Node) -> Result<(), Error<Rule>> {
         Ok(())
     }
+    fn pharos(_input: Node) -> Result<Vec<Code>, Error<Rule>> {
+        match_nodes! {
+            _input.into_children();
+            [code(c).., EOI(e)] => {
+                Ok(c.as_slice().to_owned())
+            }
+        }
+    }
     fn code(_input: Node) -> Result<Code, Error<Rule>> {
         match_nodes! {_input.into_children();
             [function_call(n)] => {Ok(Code::Exp{value: n})},
@@ -61,9 +69,13 @@ impl pharos_parser {
     }
     fn statement(_input: Node) -> Result<Stmt, Error<Rule>> {
         match_nodes!(_input.into_children();
-        [function_block(r)] => { return Ok(r); },
-        );
-        panic!("unkown statement");
+        [function_block(r)] => { Ok(r) },
+        [print(r)] => {Ok(r)},
+        [assignment(r)] =>{Ok(r)},
+        [return_statement(r)] => {Ok(r)},
+        [loops(r)] => {Ok(r)},
+        [conditional(r)] => {Ok(r)},
+        )
     }
     fn string(_input: Node) -> Result<Exp, Error<Rule>> {
         let s = _input.as_str();
@@ -89,26 +101,11 @@ impl pharos_parser {
         Ok(exp_identifier(s))
     }
     fn function_call(_input: Node) -> Result<Exp, Error<Rule>> {
-        let mut params = Vec::<Exp>::new();
-        let x = match_nodes!(_input.into_children();
-            [identifier(n)..] =>{
-                let x = n.as_slice().to_owned();
-                let y = x.get(0).unwrap();
-                let mut identifier_name;
-                match y{
-                    Exp::Identifier{name} => {
-                        identifier_name = y.to_owned();
-                    },
-                    _ => panic!("recieved something other than identifier"),
-                };
-                if (x.len() > 1){
-                    for i in 0..x.len(){
-                        params.push(x.get(i).unwrap().to_owned());
-                    }
-                }
-                return Ok(exp_functioncall(Box::new(identifier_name), params));
+        match_nodes!(_input.into_children();
+            [identifier(y), expression(n)..] =>{
+                Ok(exp_functioncall(Box::new(y), n.as_slice().to_owned()))
             },
-        );
+        )
     }
     fn bin_logical_operators(_input: Node) -> Result<Op2, Error<Rule>> {
         //println!("{}", _input.as_str());
@@ -190,17 +187,17 @@ impl pharos_parser {
     }
     fn function_block(_input: Node) -> Result<Stmt, Error<Rule>> {
         use Rule::*;
-        println!("{:?}", _input);
+        //println!("{:?}", _input);
         println!();
         let contents: Vec<Node> = _input.children().collect();
-        println!("{:?}", contents);
+        //println!("{:?}", contents);
         let temp = contents.get(0).unwrap();
         let name = match temp.as_rule() {
             identifier => pharos_parser::identifier(temp.to_owned()).unwrap(),
             _ => panic!("first node is not identifier of the function"),
         };
-        println!();
-        println!("{:?}", name);
+        //println!();
+        //println!("{:?}", name);
         let mut args = Vec::new();
         let mut body_start = 1;
         if (_input.as_str().find("inputs").is_some()) {
@@ -223,18 +220,102 @@ impl pharos_parser {
                 code => pharos_parser::code(curr.to_owned()).unwrap(),
                 _ => panic!("recieved a type other than code in body"),
             };
-            println!("curr {:?}", curr);
+            //println!("curr {:?}", curr);
             body.push(body_content);
         }
-        println!();
-        println!("{:?}", args);
-        println!();
-        println!("{:?}", body);
-        Ok(Stmt::Function {
-            name: Box::new(name),
-            args: args,
-            body: body,
-        })
+        // println!();
+        // println!("{:?}", args);
+        // println!();
+        // println!("{:?}", body);
+        Ok(stmt_function(Box::new(name), args, body))
+    }
+    fn print(_input: Node) -> Result<Stmt, Error<Rule>> {
+        match_nodes! {
+            _input.into_children();
+            [expression(n)] => {Ok(stmt_print(Box::new(n)))},
+        }
+    }
+    fn assignment(_input: Node) -> Result<Stmt, Error<Rule>> {
+        match_nodes! {
+            _input.into_children();
+            [identifier(n), expression(e)] => {
+                Ok(stmt_assignment(Box::new(n),Box::new(e)))
+            }
+        }
+    }
+    fn return_statement(_input: Node) -> Result<Stmt, Error<Rule>> {
+        let temp: Vec<Node> = _input.children().collect();
+        if (temp.len() == 0) {
+            return Ok(stmt_return(Box::new(exp_undefined())));
+        }
+        match_nodes! {
+            _input.into_children();
+            [expression(e)] => {Ok(stmt_return(Box::new(e)))}
+        }
+    }
+    fn conditional(_input: Node) -> Result<Stmt, Error<Rule>> {
+        use Rule::*;
+        //println!();
+        let contents: Vec<Node> = _input.children().collect();
+        let temp = contents.get(0).unwrap();
+        let first_if = match temp.as_rule() {
+            if_statement => pharos_parser::if_statement(temp.to_owned()).unwrap(),
+            _ => panic!("first node is not if statement"),
+        };
+        let mut b = Vec::new();
+        b.push(first_if);
+        if (contents.len() > 1) {
+            for i in 1..contents.len() {
+                let temp = contents.get(i).unwrap();
+                let curr = match temp.as_rule() {
+                    else_if_statement => pharos_parser::else_if_statement(temp.to_owned()).unwrap(),
+                    else_statement => pharos_parser::else_statement(temp.to_owned()).unwrap(),
+                    _ => panic!("first node is not if statement"),
+                };
+                b.push(curr);
+            }
+        }
+        Ok(stmt_conditionals(b))
+    }
+    fn if_statement(_input: Node) -> Result<Stmt, Error<Rule>> {
+        match_nodes! {
+            _input.into_children();
+            [expression(n), code(r)..] => {
+                Ok(stmt_if(Box::new(n), r.as_slice().to_owned()))
+            }
+        }
+    }
+    fn else_if_statement(_input: Node) -> Result<Stmt, Error<Rule>> {
+        match_nodes! {
+            _input.into_children();
+            [expression(n), code(r)..] => {
+                //println!("{:?}", r.as_slice());
+                Ok(stmt_else_if(Box::new(n), r.as_slice().to_owned()))
+            }
+        }
+    }
+    fn else_statement(_input: Node) -> Result<Stmt, Error<Rule>> {
+        match_nodes! {
+            _input.into_children();
+            [code(n)..] => {
+                //println!("{:?}", n.as_slice());
+                Ok(stmt_else(n.as_slice().to_owned()))
+            }
+        }
+    }
+    fn loops(_input: Node) -> Result<Stmt, Error<Rule>> {
+        let is_while = _input.as_str().contains("until");
+        match_nodes! {
+            _input.into_children();
+            [expression(e), code(c)..] => {
+                if (is_while){
+                    Ok(stmt_loop(true, Box::new(e), c.as_slice().to_owned()))
+                }
+                else{
+                    Ok(stmt_loop(false, Box::new(e), c.as_slice().to_owned()))
+                }
+            }
+        }
     }
 }
 
@@ -245,16 +326,16 @@ fn parser_grammar() {
         Rule::pharos,
         r#"
          // basic data types //
-         6
+         //6
          -9
          9.23
          "foo 0 0 - - #"
          false 
          true
-         printer
+         printer//
 
          // logical expressions //
-         ( 2 < 5)
+         //( 2 < 5)
          ( 6 == 7)
          (2 is less than three)
          (2 is less than or equal to y)
@@ -262,20 +343,20 @@ fn parser_grammar() {
          ((false || true) || (true and false))
          (((5 > 3) && (3 < 4)) or !(5 < 6))
          not 4
-         (((6 > 2) or (5 > 10) ) and ((3 > 6) and (4 < 9)))
+         (((6 > 2) or (5 > 10) ) and ((3 > 6) and (4 < 9)))//
          
          // Math expressions//
-         (5 + 3)
+         //(5 + 3)
          (6 + (8 - 9))
          (10 + (1 * (5 - 6)))
          (6 plus false)
-         ((9 mod 10) - false)
+         ((9 mod 10) - false)//
 
          // print statements // 
-         print ("hello")
+         //print ("hello")
          out ("output")
          output ("foo")
-         out (hello)
+         out (hello)//
 
          // if statments //
 
@@ -343,14 +424,102 @@ fn parser_grammar() {
 #[test]
 fn parser_types() {
     let pairs2 = pharos_parser::parse(
-        Rule::function_block,
-        "function foo inputs hello, call { hoo() }",
+        Rule::pharos,
+        r#"
+        // basic data types //
+         //6
+         -9
+         9.23
+         "foo 0 0 - - #"
+         false 
+         true
+         printer//
+
+         // logical expressions //
+         //( 2 < 5)
+         ( 6 == 7)
+         (2 is less than three)
+         (2 is less than or equal to y)
+         (false || true)
+         ((false || true) || (true and false))
+         (((5 > 3) && (3 < 4)) or !(5 < 6))
+         not 4
+         (((6 > 2) or (5 > 10) ) and ((3 > 6) and (4 < 9)))//
+         
+         // Math expressions//
+         //(5 + 3)
+         (6 + (8 - 9))
+         (10 + (1 * (5 - 6)))
+         (6 plus false)
+         ((9 mod 10) - false)//
+
+         // print statements // 
+         //print ("hello")
+         out ("output")
+         output ("foo")
+         out (hello)//
+
+         // if statments //
+
+         if (3 < 4){
+             print ("if")
+         }
+         else if (5 > 10){
+             out ((5 > 10))
+         }
+         else{
+             if (4 || 5){
+                 let z = 50
+                 if (9 || false ){
+                     output (foo(a,b))
+                 }
+                 else{
+                     let exit = 1
+                 }
+             }
+         }
+
+         //loop statments //
+
+         loop 10 times {
+             let x = 10
+         }
+
+         loop until (10 > 10){
+             let z = 10
+             loop 2 times{
+                 print (!4)
+                 loop until (3 > 2){
+                     let nest = true
+                 }
+             }
+         }
+
+         // functions //
+         function noinput {
+             let foo = "true"
+             return
+         }
+         
+         function hoot inputs owl, bird {
+             let fly = "away"
+             return fly
+         }
+
+         // function calls // 
+         hello ()
+         hello (one)
+         hello (one, two)
+        "#,
     )
     .unwrap();
     let input = pairs2.single().unwrap();
-    let result = pharos_parser::function_block(input).unwrap();
-    println!("result: {:?}", result);
-    println!();
+    let results = pharos_parser::pharos(input).unwrap();
+    for result in results {
+        println!("{:?}", result);
+        println!();
+    }
+    //println!("result: {:?}", result);
     assert_eq!(true, false);
 }
 
