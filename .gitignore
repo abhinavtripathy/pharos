@@ -1,1 +1,9 @@
 front-end/node_modules
+
+# The compiled command, if you build it in place.
+/pharos
+
+# Go test and coverage output.
+*.test
+*.out.tmp
+coverage.out

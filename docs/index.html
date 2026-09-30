@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pharos</title>
+<meta name="description" content="Pharos is a small programming language that reads like plain sentences, built for people writing their very first programs.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <a class="wordmark" href="index.html">Pharos</a>
+    <nav>
+      <a href="index.html" aria-current="page">Home</a>
+      <a href="guide.html">Guide</a>
+      <a href="reference.html">Reference</a>
+      <a href="examples.html">Examples</a>
+      <a href="https://github.com/abhinavtripathy/pharos">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <h1>A first programming language that reads like English</h1>
+
+  <p class="lede">
+    <em>Pharos</em> is a lighthouse: something to steer by while you are still
+    learning the waters. The language exists for the awkward moment after
+    Scratch, when coloured blocks stop being enough but curly braces and
+    semicolons are still a wall.
+  </p>
+
+  <div class="run">
+<pre><code class="pharos">print "Hello, world"</code></pre>
+<pre class="out"><code>Hello, world</code></pre>
+  </div>
+
+  <h2>Why it looks like this</h2>
+
+  <p>
+    Most of what trips up a beginner in a first real language has nothing to do
+    with programming. It is punctuation. A missing semicolon, a stray brace, an
+    <code>elif</code> that should have been <code>else if</code>. Pharos moves
+    that difficulty out of the way by spelling things out:
+    <code>is greater than</code> rather than <code>&gt;</code>,
+    <code>otherwise</code> rather than <code>else</code>,
+    <code>end if</code> rather than a closing brace.
+  </p>
+
+  <p>
+    You still learn the ideas that matter, because they are the same ideas
+    everywhere: values have types, conditions choose between paths, loops
+    repeat, and named blocks of program can be reused. Only the spelling is
+    gentler.
+  </p>
+
+  <div class="run">
+<pre><code class="pharos">num score = 82
+
+if score is greater than 89 then
+  print "an A"
+otherwise if score is greater than 79 then
+  print "a B"
+otherwise
+  print "keep going"
+end if</code></pre>
+<pre class="out"><code>a B</code></pre>
+  </div>
+
+  <h2>Mistakes are explained, not punished</h2>
+
+  <p>
+    Pharos knows what kind of value each variable is meant to hold, and says so
+    plainly when something does not fit. Error messages name the line and the
+    problem in ordinary words.
+  </p>
+
+  <div class="run">
+<pre><code class="pharos">num score = 7
+score = "seven"</code></pre>
+<pre class="out"><code>line 2: "score" was declared as num, so it cannot hold a string</code></pre>
+  </div>
+
+  <p>
+    A loop whose condition can never be met is stopped and reported rather than
+    left to spin forever, and so is a codeblock that calls itself without end.
+    Nothing hangs the machine while you are figuring things out.
+  </p>
+
+  <h2>Getting it running</h2>
+
+  <p>
+    Pharos is written in Go, so you need <a href="https://go.dev/dl/">Go 1.23
+    or newer</a>. With that in place:
+  </p>
+
+<pre><code>git clone https://github.com/abhinavtripathy/pharos.git
+cd pharos
+go build -o pharos ./cmd/pharos</code></pre>
+
+  <p>Then run one of the bundled programs:</p>
+
+<pre><code>./pharos run examples/hello.pharos</code></pre>
+
+  <p>
+    Or type at it directly, one line at a time, which is the quickest way to
+    try an idea out:
+  </p>
+
+<pre><code>./pharos repl</code></pre>
+
+  <div class="note">
+    <p>
+      Prefer to skip the clone? <code>go install
+      github.com/abhinavtripathy/pharos/cmd/pharos@latest</code> puts the
+      <code>pharos</code> command straight on your path.
+    </p>
+  </div>
+
+  <h2>Where to go next</h2>
+
+  <p>
+    The <a href="guide.html">guide</a> walks through the whole language from
+    printing a line to writing your own codeblocks, and it is meant to be read
+    in order. The <a href="reference.html">reference</a> is the short version:
+    every keyword in a handful of tables. The
+    <a href="examples.html">examples</a> are complete programs you can run
+    unchanged, each shown with exactly what it prints.
+  </p>
+
+  <div class="pager">
+    <span></span>
+    <a href="guide.html">Start the guide &rarr;</a>
+  </div>
+</main>
+
+<footer>
+  Pharos is open source under the
+  <a href="https://github.com/abhinavtripathy/pharos/blob/master/LICENSE">MIT licence</a>.
+  Every program on this site is run by the test suite, so the output shown is
+  the output you will get.
+</footer>
+
+<script src="highlight.js"></script>
+</body>
+</html>

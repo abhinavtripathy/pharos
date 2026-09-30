@@ -1,0 +1,22 @@
+-- A loop repeats itself until its question becomes true.
+
+num count = 1
+
+loop until count is greater than 5
+  print count
+  count = count + 1
+end loop
+
+-- Counting down works the same way.
+num remaining = 3
+
+loop until remaining is equal to 0
+  print "T minus " + remaining
+  remaining = remaining - 1
+end loop
+
+print "lift off"
+
+-- Something has to change inside the loop, or the question will never become
+-- true. If that happens Pharos stops the program and tells you rather than
+-- running forever.

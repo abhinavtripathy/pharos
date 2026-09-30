@@ -1,0 +1,4 @@
+-- Your first Pharos program.
+-- Run it with: pharos run examples/hello.pharos
+
+print "Hello, world"

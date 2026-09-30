@@ -1,0 +1,25 @@
+-- Asking questions about a value, and doing different things with the answer.
+
+num temperature = 18
+
+if temperature is greater than 25 then
+  print "warm"
+otherwise if temperature is greater than 10 then
+  print "mild"
+otherwise
+  print "cold"
+end if
+
+-- A question on its own is either true or false.
+print temperature is greater than 10
+print temperature is equal to 18
+print temperature is not equal to 18
+
+-- Questions join together with and, or and not.
+bool raining = true
+
+if temperature is greater than 10 and not raining then
+  print "a good day for a walk"
+otherwise
+  print "better to stay in"
+end if
