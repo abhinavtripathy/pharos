@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pharos Guide</title>
+<meta name="description" content="A walk through the whole Pharos language, from printing a line to writing your own codeblocks.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <a class="wordmark" href="index.html">Pharos</a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="guide.html" aria-current="page">Guide</a>
+      <a href="reference.html">Reference</a>
+      <a href="examples.html">Examples</a>
+      <a href="https://github.com/abhinavtripathy/pharos">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <h1>The guide</h1>
+
+  <p class="lede">
+    This is the whole language, in the order it makes sense to learn it. Read
+    it start to finish and nothing later will depend on something you have not
+    met yet. Every program here is short enough to type out, and typing them
+    out is the point.
+  </p>
+
+  <div class="toc">
+    <p>On this page</p>
+    <ol>
+      <li><a href="#running">Running a program</a></li>
+      <li><a href="#printing">Printing</a></li>
+      <li><a href="#values">Values and variables</a></li>
+      <li><a href="#arithmetic">Arithmetic and joining text</a></li>
+      <li><a href="#questions">Asking questions</a></li>
+      <li><a href="#choosing">Choosing what to do</a></li>
+      <li><a href="#repeating">Repeating</a></li>
+      <li><a href="#codeblocks">Codeblocks</a></li>
+      <li><a href="#giveback">Giving back an answer</a></li>
+      <li><a href="#notes">Notes to yourself</a></li>
+      <li><a href="#wrong">When something is wrong</a></li>
+    </ol>
+  </div>
+
+  <h2 id="running">1. Running a program</h2>
+
+  <p>
+    A Pharos program is a plain text file whose name ends in
+    <code>.pharos</code>. Put this in a file called <code>hello.pharos</code>:
+  </p>
+
+  <div class="run">
+<pre><code class="pharos">print "Hello, world"</code></pre>
+<pre class="out"><code>Hello, world</code></pre>
+  </div>
+
+  <p>and run it:</p>
+
+<pre><code>pharos run hello.pharos</code></pre>
+
+  <p>
+    There is no setup line, no wrapper, and nothing to declare first. The file
+    is the program, and it runs from the top down.
+  </p>
+
+  <p>
+    While you are experimenting it is often easier to use the prompt, which
+    keeps everything you have typed so far and shows you the value of anything
+    you write:
+  </p>
+
+<pre><code>$ pharos repl
+pharos&gt; num x = 20
+pharos&gt; x + 1
+21
+pharos&gt; print "hi " + x
+hi 20</code></pre>
+
+  <h2 id="printing">2. Printing</h2>
+
+  <p>
+    <code>print</code> puts something on the screen and then moves to the next
+    line. If <code>print</code> feels like the wrong word, <code>out</code> and
+    <code>output</code> mean exactly the same thing; pick whichever you
+    remember.
+  </p>
+
+  <div class="run">
+<pre><code class="pharos">print "first"
+out "second"
+output "third"</code></pre>
+<pre class="out"><code>first
+second
+third</code></pre>
+  </div>
+
+  <h2 id="values">3. Values and variables</h2>
+
+  <p>Pharos works with three kinds of value:</p>
+
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th>Kind</th><th>Holds</th><th>For example</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>num</code></td><td>a number, whole or not</td><td><code>7</code>, <code>-2</code>, <code>3.5</code></td></tr>
+      <tr><td><code>string</code></td><td>a piece of text</td><td><code>"Ada"</code>, <code>'hello'</code></td></tr>
+      <tr><td><code>bool</code></td><td>yes or no</td><td><code>true</code>, <code>false</code></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>
+    To make a variable you say which kind it is, give it a name, and give it a
+    starting value. All three parts are required.
+  </p>
+
+  <div class="run">
+<pre><code class="pharos">num score = 7
+string name = "Ada"
+bool finished = false
+
+print name
+print score
+print finished</code></pre>
+<pre class="out"><code>Ada
+7
+false</code></pre>
+  </div>
+
+  <p>
+    After that, changing a variable needs only its name. You do not repeat the
+    kind.
+  </p>
+
+  <div class="run">
+<pre><code class="pharos">num score = 7
+score = score + 3
+print score</code></pre>
+<pre class="out"><code>10</code></pre>
+  </div>
+
+  <p>
+    What a variable cannot do is change into a different kind of value. Saying
+    <code>num score</code> is a promise that <code>score</code> will always be
+    a number, and Pharos holds you to it.
+  </p>
+
+  <div class="run">
+<pre><code class="pharos">num score = 7
+score = "seven"</code></pre>
+<pre class="out"><code>line 2: "score" was declared as num, so it cannot hold a string</code></pre>
+  </div>
+
+  <div class="note">
+    <p>
+      This feels strict at first and saves a great deal of confusion later. A
+      variable that could quietly turn from a number into text is the source of
+      a whole family of bugs that are very hard to see.
+    </p>
+  </div>
+
+  <h2 id="arithmetic">4. Arithmetic and joining text</h2>
+
+  <p>
+    Numbers use the four symbols you already know:
+    <code>+</code>, <code>-</code>, <code>*</code> and <code>/</code>.
+    Multiplication and division happen before addition and subtraction, and
+    brackets override that.
+  </p>
+
+  <div class="run">
+<pre><code class="pharos">print 2 + 3 * 4
+print (2 + 3) * 4
+print 7 / 2</code></pre>
+<pre class="out"><code>14
+20
+3.5</code></pre>
+  </div>
+
+  <p>
+    <code>+</code> also joins text together. When one side is text and the
+    other is a number or a yes/no value, the number is written out as part of
+    the text, which is what makes printing a sentence about a value easy.
+  </p>
+
+  <div class="run">
+<pre><code class="pharos">string name = "Ada"
+num score = 7
+
+print "Hello, " + name
+print name + " scored " + score</code></pre>
+<pre class="out"><code>Hello, Ada
+Ada scored 7</code></pre>
+  </div>
+
+  <h2 id="questions">5. Asking questions</h2>
+
+  <p>
+    A question about two values is written out in words, and its answer is
+    always <code>true</code> or <code>false</code>.
+  </p>
+
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th>Question</th><th>True when</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>a is greater than b</code></td><td>a is the larger number</td></tr>
+      <tr><td><code>a is less than b</code></td><td>a is the smaller number</td></tr>
+      <tr><td><code>a is equal to b</code></td><td>the two are the same</td></tr>
+      <tr><td><code>a is not equal to b</code></td><td>the two differ</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="run">
+<pre><code class="pharos">num age = 12
+
+print age is greater than 10
+print age is equal to 12
+print age is not equal to 12</code></pre>
+<pre class="out"><code>true
+true
+false</code></pre>
+  </div>
+
+  <p>
+    <code>is greater than</code> and <code>is less than</code> compare numbers.
+    <code>is equal to</code> works on any two values of the same kind, so text
+    and yes/no values can be compared too.
+  </p>
+
+  <p>
+    Questions combine with <code>and</code>, <code>or</code> and
+    <code>not</code>. <code>and</code> is true when both sides are;
+    <code>or</code> when at least one is; <code>not</code> flips an answer
+    over.
+  </p>
+
+  <div class="run">
+<pre><code class="pharos">num temperature = 18
+bool raining = true
+
+print temperature is greater than 10 and not raining
+print temperature is greater than 10 or raining</code></pre>
+<pre class="out"><code>false
+true</code></pre>
+  </div>
+
+  <h2 id="choosing">6. Choosing what to do</h2>
+
+  <p>
+    <code>if</code> runs part of a program only when a question is true. The
+    question is followed by <code>then</code>, the part to run goes on the
+    lines below, and <code>end if</code> marks where it stops.
+  </p>
+
+  <div class="run">
+<pre><code class="pharos">num temperature = 30
+
+if temperature is greater than 25 then
+  print "warm"
+end if</code></pre>
+<pre class="out"><code>warm</code></pre>
+  </div>
+
+  <p>
+    <code>otherwise</code> covers the case where the question was false, and
+    <code>otherwise if</code> asks a further question. You can chain as many
+    <code>otherwise if</code> parts as you need. Pharos tries them from the top
+    and takes the first one that is true.
+  </p>
+
+  <div class="run">
+<pre><code class="pharos">num temperature = 18
+
+if temperature is greater than 25 then
+  print "warm"
+otherwise if temperature is greater than 10 then
+  print "mild"
+otherwise
+  print "cold"
+end if</code></pre>
+<pre class="out"><code>mild</code></pre>
+  </div>
+
+  <p>
+    The indentation is there to help you read it. Pharos does not mind how much
+    you use, but being consistent will save you from misreading your own
+    program.
+  </p>
+
+  <h2 id="repeating">7. Repeating</h2>
+
+  <p>
+    <code>loop until</code> repeats the lines inside it, checking a question
+    each time round, and stops as soon as that question becomes true. Read it
+    as the sentence it is: keep going <em>until</em> this is true.
+  </p>
+
+  <div class="run">
+<pre><code class="pharos">num count = 1
+
+loop until count is greater than 5
+  print count
+  count = count + 1
+end loop</code></pre>
+<pre class="out"><code>1
+2
+3
+4
+5</code></pre>
+  </div>
+
+  <p>
+    That <code>count = count + 1</code> line is the important one. Something
+    inside the loop has to move the program towards the question being true,
+    or it never will be.
+  </p>
+
+  <div class="note">
+    <p>
+      If you do forget, nothing terrible happens. Pharos notices a loop going
+      round far too many times, stops the program, and tells you which loop was
+      the problem. You will not have to force-quit anything.
+    </p>
+  </div>
+
+  <p>
+    Because the question is checked before the first pass, a loop whose
+    question is already true simply does not run.
+  </p>
+
+  <div class="run">
+<pre><code class="pharos">num count = 99
+
+loop until count is greater than 5
+  print "this never happens"
+end loop
+
+print "finished"</code></pre>
+<pre class="out"><code>finished</code></pre>
+  </div>
+
+  <h2 id="codeblocks">8. Codeblocks</h2>
+
+  <p>
+    A <em>codeblock</em> is a piece of program with a name. You write it once
+    and run it whenever you like, which keeps you from copying the same lines
+    over and over.
+  </p>
+
+  <div class="run">
+<pre><code class="pharos">codeblock banner
+  print "----------"
+end codeblock
+
+banner
+print "Results"
+banner</code></pre>
+<pre class="out"><code>----------
+Results
+----------</code></pre>
+  </div>
+
+  <p>
+    A codeblock that needs nothing is run by writing its name on a line of its
+    own. To hand it something to work with, name the values it expects after
+    <code>with</code>, separated by commas.
+  </p>
+
+  <div class="run">
+<pre><code class="pharos">codeblock greet with who
+  print "Hello, " + who
+end codeblock
+
+greet with "Ada"
+greet with "Alan"</code></pre>
+<pre class="out"><code>Hello, Ada
+Hello, Alan</code></pre>
+  </div>
+
+  <p>
+    Inside the codeblock, <code>who</code> is an ordinary variable holding
+    whatever was handed over. Notice that it needs no <code>num</code> or
+    <code>string</code> in front of it: a codeblock takes whatever kind of
+    value you give it.
+  </p>
+
+  <p>
+    A codeblock can see the variables around it, so it can also change
+    something defined outside itself.
+  </p>
+
+  <div class="run">
+<pre><code class="pharos">num total = 0
+
+codeblock add with amount
+  total = total + amount
+end codeblock
+
+add with 5
+add with 7
+print total</code></pre>
+<pre class="out"><code>12</code></pre>
+  </div>
+
+  <h2 id="giveback">9. Giving back an answer</h2>
+
+  <p>
+    Codeblocks so far have done something. A codeblock can instead work
+    something out and hand the answer back with <code>give back</code>, which
+    lets you use it anywhere a value belongs.
+  </p>
+
+  <div class="run">
+<pre><code class="pharos">codeblock area with width, height
+  give back width * height
+end codeblock
+
+print area with 3, 4</code></pre>
+<pre class="out"><code>12</code></pre>
+  </div>
+
+  <div class="note">
+    <p>
+      One thing to watch: everything after <code>with</code> is taken as the
+      values being handed over, all the way to the end of the line. So
+      <code>print "a wall of " + area with 10, 8 + " tiles"</code> does not do
+      what it looks like, because <code>8 + " tiles"</code> gets read as the
+      second value.
+    </p>
+    <p>
+      Brackets settle it. Put them around the whole call whenever you use one
+      in the middle of something larger:
+    </p>
+  </div>
+
+  <div class="run">
+<pre><code class="pharos">codeblock area with width, height
+  give back width * height
+end codeblock
+
+print "a wall of " + (area with 10, 8) + " tiles"</code></pre>
+<pre class="out"><code>a wall of 80 tiles</code></pre>
+  </div>
+
+  <p>
+    <code>give back</code> also stops the codeblock there and then, which is
+    useful for handling a simple case first and leaving the rest below.
+  </p>
+
+  <div class="run">
+<pre><code class="pharos">codeblock describe with n
+  if n is equal to 0 then
+    give back "nothing"
+  end if
+
+  if n is less than 0 then
+    give back "below zero"
+  end if
+
+  give back "above zero"
+end codeblock
+
+print describe with 0
+print describe with -3
+print describe with 8</code></pre>
+<pre class="out"><code>nothing
+below zero
+above zero</code></pre>
+  </div>
+
+  <p>
+    A codeblock is even allowed to use itself, which is how you work through
+    something a step at a time.
+  </p>
+
+  <div class="run">
+<pre><code class="pharos">codeblock countdown with n
+  if n is equal to 0 then
+    give back "lift off"
+  end if
+
+  print n
+  give back countdown with n - 1
+end codeblock
+
+print countdown with 3</code></pre>
+<pre class="out"><code>3
+2
+1
+lift off</code></pre>
+  </div>
+
+  <h2 id="notes">10. Notes to yourself</h2>
+
+  <p>
+    Two dashes start a note. Pharos ignores everything after them to the end of
+    the line, so you can explain what a program is for, or park a line you are
+    not using yet.
+  </p>
+
+  <div class="run">
+<pre><code class="pharos">-- Works out how much paint we need.
+num walls = 4          -- one per side
+print walls * 12
+-- print "not this one"</code></pre>
+<pre class="out"><code>48</code></pre>
+  </div>
+
+  <h2 id="wrong">11. When something is wrong</h2>
+
+  <p>
+    Pharos tries to say what went wrong in the same words you wrote the program
+    in, and always tells you the line. There are two moments it can happen.
+  </p>
+
+  <p>
+    Before anything runs, Pharos reads the whole program. If a sentence is
+    unfinished it says so, and it reports every such problem at once rather
+    than making you fix them one at a time.
+  </p>
+
+  <div class="run">
+<pre><code class="pharos">num count = 1
+
+loop until count is greater than 3
+  print count
+  count = count + 1</code></pre>
+<pre class="out"><code>line 3: this "loop" is missing its "end loop"</code></pre>
+  </div>
+
+  <p>
+    Then, as the program runs, it stops at the first thing that does not make
+    sense and explains it.
+  </p>
+
+  <div class="run">
+<pre><code class="pharos">num total = 10
+num people = 0
+print total / people</code></pre>
+<pre class="out"><code>line 3: cannot divide by zero</code></pre>
+  </div>
+
+  <p>
+    A name you have not introduced yet is one of the most common slips, and
+    usually means a typo:
+  </p>
+
+  <div class="run">
+<pre><code class="pharos">num score = 10
+print scor</code></pre>
+<pre class="out"><code>line 2: I have not heard of "scor" yet</code></pre>
+  </div>
+
+  <h2>That is all of it</h2>
+
+  <p>
+    There is no chapter twelve. What you have read is the entire language:
+    three kinds of value, four questions, three ways to combine them,
+    <code>if</code>, <code>loop until</code>, and <code>codeblock</code>. The
+    <a href="examples.html">examples</a> put the pieces together into complete
+    programs, and the <a href="reference.html">reference</a> is there for when
+    you only need to check a spelling.
+  </p>
+
+  <div class="pager">
+    <a href="index.html">&larr; Home</a>
+    <a href="examples.html">Examples &rarr;</a>
+  </div>
+</main>
+
+<footer>
+  Every program on this page is run by the project's test suite, so the output
+  shown is the output you will get.
+</footer>
+
+<script src="highlight.js"></script>
+</body>
+</html>

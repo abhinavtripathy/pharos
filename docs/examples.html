@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pharos Examples</title>
+<meta name="description" content="Complete Pharos programs you can run unchanged, each shown with exactly what it prints.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <a class="wordmark" href="index.html">Pharos</a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="guide.html">Guide</a>
+      <a href="reference.html">Reference</a>
+      <a href="examples.html" aria-current="page">Examples</a>
+      <a href="https://github.com/abhinavtripathy/pharos">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <h1>Examples</h1>
+
+  <p class="lede">
+    Complete programs, not fragments. Each one lives in the
+    <a href="https://github.com/abhinavtripathy/pharos/tree/master/examples">examples
+    folder</a> of the repository, so you can run any of them straight after
+    building Pharos, and the output below is what the test suite says they
+    print.
+  </p>
+
+<pre><code>pharos run examples/hello.pharos</code></pre>
+
+  <h2>hello.pharos</h2>
+
+  <p>Where everybody starts.</p>
+
+  <div class="run">
+<pre><code class="pharos">-- Your first Pharos program.
+-- Run it with: pharos run examples/hello.pharos
+
+print "Hello, world"</code></pre>
+<pre class="out"><code>Hello, world</code></pre>
+  </div>
+
+  <h2>variables.pharos</h2>
+
+  <p>
+    The three kinds of value, arithmetic, and joining a number onto a piece of
+    text.
+  </p>
+
+  <div class="run">
+<pre><code class="pharos">-- Pharos keeps three kinds of value, and you say which one you mean.
+
+num score = 7
+string name = "Ada"
+bool finished = false
+
+print name
+print score
+print finished
+
+-- Numbers do arithmetic.
+print score * 2
+print score / 2
+
+-- Text joins together with +, and a number will join onto text too.
+print "Hello, " + name
+print name + " scored " + score
+
+-- A variable can change as often as you like.
+score = score + 3
+print "now " + score
+
+-- What it cannot do is change into a different kind of value. Uncomment the
+-- next line and Pharos will explain why it refuses.
+-- score = "eleven"</code></pre>
+<pre class="out"><code>Ada
+7
+false
+14
+3.5
+Hello, Ada
+Ada scored 7
+now 10</code></pre>
+  </div>
+
+  <h2>conditions.pharos</h2>
+
+  <p>
+    Choosing between paths, and the fact that a question on its own is just a
+    value you can print.
+  </p>
+
+  <div class="run">
+<pre><code class="pharos">-- Asking questions about a value, and doing different things with the answer.
+
+num temperature = 18
+
+if temperature is greater than 25 then
+  print "warm"
+otherwise if temperature is greater than 10 then
+  print "mild"
+otherwise
+  print "cold"
+end if
+
+-- A question on its own is either true or false.
+print temperature is greater than 10
+print temperature is equal to 18
+print temperature is not equal to 18
+
+-- Questions join together with and, or and not.
+bool raining = true
+
+if temperature is greater than 10 and not raining then
+  print "a good day for a walk"
+otherwise
+  print "better to stay in"
+end if</code></pre>
+<pre class="out"><code>mild
+true
+true
+false
+better to stay in</code></pre>
+  </div>
+
+  <h2>loops.pharos</h2>
+
+  <p>Counting up, then counting down.</p>
+
+  <div class="run">
+<pre><code class="pharos">-- A loop repeats itself until its question becomes true.
+
+num count = 1
+
+loop until count is greater than 5
+  print count
+  count = count + 1
+end loop
+
+-- Counting down works the same way.
+num remaining = 3
+
+loop until remaining is equal to 0
+  print "T minus " + remaining
+  remaining = remaining - 1
+end loop
+
+print "lift off"</code></pre>
+<pre class="out"><code>1
+2
+3
+4
+5
+T minus 3
+T minus 2
+T minus 1
+lift off</code></pre>
+  </div>
+
+  <h2>codeblocks.pharos</h2>
+
+  <p>
+    Naming a piece of program, handing it values, getting an answer back, and
+    letting it call itself.
+  </p>
+
+  <div class="run">
+<pre><code class="pharos">-- A codeblock is a piece of program you name once and run whenever you like.
+
+codeblock greet with who
+  print "Hello, " + who
+end codeblock
+
+greet with "Ada"
+greet with "Alan"
+
+-- Use "give back" when a codeblock should answer with a value.
+codeblock area with width, height
+  give back width * height
+end codeblock
+
+print "the area is " + area with 3, 4
+
+-- A codeblock that needs nothing is run by writing its name on its own.
+codeblock banner
+  print "----------"
+end codeblock
+
+banner
+
+-- A codeblock is allowed to use itself.
+codeblock countdown with n
+  if n is equal to 0 then
+    print "done"
+    give back 0
+  end if
+  print n
+  give back countdown with n - 1
+end codeblock
+
+countdown with 3</code></pre>
+<pre class="out"><code>Hello, Ada
+Hello, Alan
+the area is 12
+----------
+3
+2
+1
+done</code></pre>
+  </div>
+
+  <div class="note">
+    <p>
+      <code>print "the area is " + area with 3, 4</code> works here only
+      because the call is the last thing on the line. Had anything followed it,
+      that would have been swallowed as a third value; brackets are the fix.
+    </p>
+  </div>
+
+  <h2>report-card.pharos</h2>
+
+  <p>
+    Most of the language at once: a codeblock with a chain of conditions inside
+    it, a loop building up a running total, and a variable declared fresh on
+    every pass.
+  </p>
+
+  <div class="run">
+<pre><code class="pharos">-- A longer program that uses most of the language at once.
+
+codeblock grade with score
+  if score is greater than 89 then
+    give back "A"
+  otherwise if score is greater than 79 then
+    give back "B"
+  otherwise if score is greater than 69 then
+    give back "C"
+  otherwise
+    give back "F"
+  end if
+end codeblock
+
+num students = 4
+num total = 0
+num highest = 0
+num i = 0
+
+loop until i is equal to students
+  num score = 60 + i * 11
+
+  total = total + score
+  if score is greater than highest then
+    highest = score
+  end if
+
+  print "score " + score + " earns a " + grade with score
+  i = i + 1
+end loop
+
+print "highest: " + highest
+print "average: " + total / students</code></pre>
+<pre class="out"><code>score 60 earns a F
+score 71 earns a C
+score 82 earns a B
+score 93 earns a A
+highest: 93
+average: 76.5</code></pre>
+  </div>
+
+  <h2>Things to try</h2>
+
+  <p>
+    The fastest way to learn a language is to break it on purpose. A few
+    suggestions:
+  </p>
+
+  <ul>
+    <li>Change <code>loops.pharos</code> to count from 10 down to 1, then to count in twos.</li>
+    <li>Make <code>report-card.pharos</code> print the lowest score as well as the highest.</li>
+    <li>Add a <code>codeblock</code> to <code>report-card.pharos</code> that turns a grade letter into a sentence, and print that instead.</li>
+    <li>Delete an <code>end if</code> and read what Pharos says. Then delete a <code>then</code>.</li>
+    <li>Write a loop that never finishes, and watch Pharos stop it rather than hang.</li>
+  </ul>
+
+  <div class="pager">
+    <a href="reference.html">&larr; Reference</a>
+    <a href="https://github.com/abhinavtripathy/pharos">The source &rarr;</a>
+  </div>
+</main>
+
+<footer>
+  Every program on this page is run by the project's test suite against the
+  committed output, so what you see is what you will get.
+</footer>
+
+<script src="highlight.js"></script>
+</body>
+</html>

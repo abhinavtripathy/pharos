@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pharos Reference</title>
+<meta name="description" content="Every keyword and rule in the Pharos language, in a handful of tables.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <a class="wordmark" href="index.html">Pharos</a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="guide.html">Guide</a>
+      <a href="reference.html" aria-current="page">Reference</a>
+      <a href="examples.html">Examples</a>
+      <a href="https://github.com/abhinavtripathy/pharos">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <h1>Reference</h1>
+
+  <p class="lede">
+    The whole language on one page, for when you know what you want and only
+    need to check how it is spelled. If you are meeting Pharos for the first
+    time, the <a href="guide.html">guide</a> is the better place to start.
+  </p>
+
+  <h2>How a program is laid out</h2>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Rule</th><th>Detail</th></tr></thead>
+    <tbody>
+      <tr><td>One statement per line</td><td>There are no semicolons. A line break ends a statement.</td></tr>
+      <tr><td>Blank lines are free</td><td>Use them wherever they help.</td></tr>
+      <tr><td>Indentation is for you</td><td>Pharos does not measure it. Being consistent still pays.</td></tr>
+      <tr><td>Notes start with <code>--</code></td><td>Everything to the end of that line is ignored.</td></tr>
+      <tr><td>Keywords ignore case</td><td><code>If</code> and <code>if</code> are the same word. Variable names do not ignore case, so <code>score</code> and <code>Score</code> are two different variables.</td></tr>
+      <tr><td>Files end in <code>.pharos</code></td><td>By convention, not by rule.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h2>Kinds of value</h2>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Keyword</th><th>Holds</th><th>Written as</th></tr></thead>
+    <tbody>
+      <tr><td><code>num</code></td><td>A number, whole or fractional, positive or negative.</td><td><code>0</code>, <code>42</code>, <code>-7</code>, <code>3.5</code></td></tr>
+      <tr><td><code>string</code></td><td>A piece of text.</td><td><code>"Ada"</code>, <code>'Ada'</code></td></tr>
+      <tr><td><code>bool</code></td><td>A yes-or-no value.</td><td><code>true</code>, <code>false</code></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>
+    Text can use single or double quotes, as long as the pair matches. Inside
+    text, <code>\n</code> is a line break, <code>\t</code> is a tab, and
+    <code>\"</code> is a quote that does not end the text.
+  </p>
+
+  <h2>Variables</h2>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Form</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td><code>num x = 5</code></td><td>Introduces <code>x</code> and fixes it as a number forever.</td></tr>
+      <tr><td><code>x = 6</code></td><td>Changes a variable that already exists.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>
+    A starting value is required; there is no way to declare a variable and
+    leave it empty. Declaring the same name twice in the same place is an
+    error, as is assigning a value of the wrong kind, or assigning to a name
+    that was never declared.
+  </p>
+
+  <p>
+    Variables declared inside an <code>if</code>, a <code>loop</code> or a
+    <code>codeblock</code> belong to that block and are gone when it ends.
+    Assigning to a name from an enclosing block changes that outer variable
+    rather than making a new one.
+  </p>
+
+  <h2>Printing</h2>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Form</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td><code>print x</code></td><td>Writes <code>x</code> followed by a line break.</td></tr>
+      <tr><td><code>out x</code></td><td>The same thing.</td></tr>
+      <tr><td><code>output x</code></td><td>The same thing again.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>Text is printed without its quotes, and whole numbers without a decimal point.</p>
+
+  <h2>Arithmetic</h2>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Operator</th><th>Does</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><code>+</code></td><td>Adds numbers, or joins text.</td><td>If either side is text, the result is text.</td></tr>
+      <tr><td><code>-</code></td><td>Subtracts.</td><td>Numbers only.</td></tr>
+      <tr><td><code>*</code></td><td>Multiplies.</td><td>Numbers only.</td></tr>
+      <tr><td><code>/</code></td><td>Divides.</td><td>Numbers only. Dividing by zero is an error.</td></tr>
+      <tr><td><code>-x</code></td><td>Makes a number negative.</td><td>Numbers only.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>
+    Division gives an exact answer rather than rounding, so <code>7 / 2</code>
+    is <code>3.5</code>. There is no remainder operator yet.
+  </p>
+
+  <h2>Questions</h2>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Question</th><th>True when</th><th>Works on</th></tr></thead>
+    <tbody>
+      <tr><td><code>a is greater than b</code></td><td>a is larger</td><td>numbers</td></tr>
+      <tr><td><code>a is less than b</code></td><td>a is smaller</td><td>numbers</td></tr>
+      <tr><td><code>a is equal to b</code></td><td>both are the same</td><td>any two values of the same kind</td></tr>
+      <tr><td><code>a is not equal to b</code></td><td>they differ</td><td>any two values of the same kind</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>
+    Comparing two different kinds of value is an error rather than simply
+    false, because it is nearly always a mistake.
+  </p>
+
+  <h2>Combining questions</h2>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Operator</th><th>True when</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><code>a and b</code></td><td>both are true</td><td>If <code>a</code> is false, <code>b</code> is never looked at.</td></tr>
+      <tr><td><code>a or b</code></td><td>at least one is true</td><td>If <code>a</code> is true, <code>b</code> is never looked at.</td></tr>
+      <tr><td><code>not a</code></td><td><code>a</code> is false</td><td></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>
+    These work only on <code>true</code> and <code>false</code>. A number is
+    not treated as a stand-in for either.
+  </p>
+
+  <h2>Choosing</h2>
+
+<pre><code class="pharos">if question then
+  ...
+otherwise if question then
+  ...
+otherwise
+  ...
+end if</code></pre>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Part</th><th>Required</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><code>if ... then</code></td><td>yes</td><td>The question must be <code>true</code> or <code>false</code>.</td></tr>
+      <tr><td><code>otherwise if ... then</code></td><td>no</td><td>As many as you like. Tried from the top down.</td></tr>
+      <tr><td><code>otherwise</code></td><td>no</td><td>At most one, and it goes last.</td></tr>
+      <tr><td><code>end if</code></td><td>yes</td><td></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h2>Repeating</h2>
+
+<pre><code class="pharos">loop until question
+  ...
+end loop</code></pre>
+
+  <p>
+    The question is checked before each pass, so a loop whose question starts
+    out true never runs at all. A loop that runs a million times without its
+    question becoming true is stopped and reported, on the assumption that
+    something inside it forgot to change.
+  </p>
+
+  <h2>Codeblocks</h2>
+
+<pre><code class="pharos">codeblock name with first, second
+  ...
+  give back value
+end codeblock</code></pre>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Form</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td><code>codeblock name</code></td><td>Starts a codeblock that takes nothing.</td></tr>
+      <tr><td><code>codeblock name with a, b</code></td><td>Starts one that expects two values.</td></tr>
+      <tr><td><code>give back x</code></td><td>Stops the codeblock and answers with <code>x</code>.</td></tr>
+      <tr><td><code>end codeblock</code></td><td>Ends the definition.</td></tr>
+      <tr><td><code>name</code></td><td>Runs a codeblock that takes nothing.</td></tr>
+      <tr><td><code>name with 1, 2</code></td><td>Runs one, handing over two values.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>
+    The values a codeblock expects have no declared kind, so they accept
+    whatever is handed over. Handing over the wrong number of values is an
+    error. A codeblock can see the variables around it and may change them, and
+    it may call itself. Calling itself ten thousand deep without finishing is
+    stopped and reported.
+  </p>
+
+  <div class="note">
+    <p>
+      Everything after <code>with</code> is read as the values being handed
+      over, to the end of the line. When a call sits inside a larger
+      expression, put brackets around it:
+      <code>print "total: " + (add with 1, 2)</code>.
+    </p>
+  </div>
+
+  <h2>What binds tightest</h2>
+
+  <p>Loosest at the top, tightest at the bottom:</p>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Level</th><th>Operators</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><code>or</code></td></tr>
+      <tr><td>2</td><td><code>and</code></td></tr>
+      <tr><td>3</td><td><code>is equal to</code>, <code>is not equal to</code></td></tr>
+      <tr><td>4</td><td><code>is greater than</code>, <code>is less than</code></td></tr>
+      <tr><td>5</td><td><code>+</code>, <code>-</code></td></tr>
+      <tr><td>6</td><td><code>*</code>, <code>/</code></td></tr>
+      <tr><td>7</td><td><code>not</code>, negative <code>-</code></td></tr>
+      <tr><td>8</td><td><code>with</code></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>Brackets override all of it.</p>
+
+  <h2>Running Pharos</h2>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Command</th><th>Does</th></tr></thead>
+    <tbody>
+      <tr><td><code>pharos run file.pharos</code></td><td>Runs a program.</td></tr>
+      <tr><td><code>pharos file.pharos</code></td><td>The same, with less typing.</td></tr>
+      <tr><td><code>pharos repl</code></td><td>Opens a prompt that keeps what you have typed.</td></tr>
+      <tr><td><code>pharos version</code></td><td>Prints the version.</td></tr>
+      <tr><td><code>pharos help</code></td><td>Prints the commands.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>
+    A program that fails leaves a non-zero exit status, so Pharos behaves
+    properly inside scripts and other tools.
+  </p>
+
+  <h2>Words Pharos keeps for itself</h2>
+
+  <p>
+    These cannot be used as variable names:
+    <code>num</code>, <code>string</code>, <code>bool</code>,
+    <code>true</code>, <code>false</code>,
+    <code>print</code>, <code>out</code>, <code>output</code>,
+    <code>if</code>, <code>then</code>, <code>otherwise</code>,
+    <code>loop</code>, <code>until</code>,
+    <code>codeblock</code>, <code>with</code>,
+    <code>and</code>, <code>or</code>, <code>not</code>.
+  </p>
+
+  <p>
+    <code>end</code>, <code>is</code>, <code>give</code> and
+    <code>back</code> are only special as part of a longer phrase
+    (<code>end if</code>, <code>is equal to</code>, <code>give back</code>),
+    so on their own they are ordinary names.
+  </p>
+
+  <div class="pager">
+    <a href="guide.html">&larr; Guide</a>
+    <a href="examples.html">Examples &rarr;</a>
+  </div>
+</main>
+
+<footer>
+  Pharos is open source under the
+  <a href="https://github.com/abhinavtripathy/pharos/blob/master/LICENSE">MIT licence</a>.
+</footer>
+
+<script src="highlight.js"></script>
+</body>
+</html>
