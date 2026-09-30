@@ -1,0 +1,33 @@
+-- A longer program that uses most of the language at once.
+
+codeblock grade with score
+  if score is greater than 89 then
+    give back "A"
+  otherwise if score is greater than 79 then
+    give back "B"
+  otherwise if score is greater than 69 then
+    give back "C"
+  otherwise
+    give back "F"
+  end if
+end codeblock
+
+num students = 4
+num total = 0
+num highest = 0
+num i = 0
+
+loop until i is equal to students
+  num score = 60 + i * 11
+
+  total = total + score
+  if score is greater than highest then
+    highest = score
+  end if
+
+  print "score " + score + " earns a " + grade with score
+  i = i + 1
+end loop
+
+print "highest: " + highest
+print "average: " + total / students

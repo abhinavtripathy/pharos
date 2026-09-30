@@ -1,0 +1,34 @@
+-- A codeblock is a piece of program you name once and run whenever you like.
+
+codeblock greet with who
+  print "Hello, " + who
+end codeblock
+
+greet with "Ada"
+greet with "Alan"
+
+-- Use "give back" when a codeblock should answer with a value.
+codeblock area with width, height
+  give back width * height
+end codeblock
+
+print "the area is " + area with 3, 4
+
+-- A codeblock that needs nothing is run by writing its name on its own.
+codeblock banner
+  print "----------"
+end codeblock
+
+banner
+
+-- A codeblock is allowed to use itself.
+codeblock countdown with n
+  if n is equal to 0 then
+    print "done"
+    give back 0
+  end if
+  print n
+  give back countdown with n - 1
+end codeblock
+
+countdown with 3

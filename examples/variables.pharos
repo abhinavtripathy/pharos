@@ -1,0 +1,25 @@
+-- Pharos keeps three kinds of value, and you say which one you mean.
+
+num score = 7
+string name = "Ada"
+bool finished = false
+
+print name
+print score
+print finished
+
+-- Numbers do arithmetic.
+print score * 2
+print score / 2
+
+-- Text joins together with +, and a number will join onto text too.
+print "Hello, " + name
+print name + " scored " + score
+
+-- A variable can change as often as you like.
+score = score + 3
+print "now " + score
+
+-- What it cannot do is change into a different kind of value. Uncomment the
+-- next line and Pharos will explain why it refuses.
+-- score = "eleven"
